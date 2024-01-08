@@ -74,7 +74,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
             wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
             wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-            wcsa.plots_w_c_sa(t_wcsa,outputs_wcsa,i)
+            wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
             
         ########################################################        
         #### convert cortisol values per day to per minutes ####
@@ -120,7 +120,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         [t_gi, outputs_gi] = gi.Glucose_Insulin(1,cortisol_gi)
         gi.save_output(folder,'glucose.csv',outputs_gi[11],i)
         #[t_gi, outputs_gi] = gi.Glucose_Insulin(0,df)
-        #gi.plot_GI(t_gi, outputs_gi,i)
+        #gi.plot_GI(t_gi, folder, outputs_gi,i)
         #print('Glicose ok')
         ### convert glucose values per minutes to per day 
         # 1440000 data points
@@ -163,7 +163,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
         wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
         wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-        wcsa.plots_w_c_sa(t_wcsa,outputs_wcsa,i)
+        wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
         
         # write last simulation to file
         if (i==(days-1)):
@@ -200,10 +200,10 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     # create new file 
     
     if(simulation=='F'):
-        folder = 'Output/female'
+        folder = 'Output/female/'
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male'
+        folder = 'Output/male/'
         out_filename = 'average_cortisol_male.csv'
     f = open (out_filename, 'w')
     
@@ -260,7 +260,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],0)
     wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],0)
     wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],0)
-    wcsa.plots_w_c_sa(t_wcsa1,outputs_wcsa,0)
+    wcsa.plots_w_c_sa(t_wcsa1,folder,outputs_wcsa,0)
     
     #|------------------------------------------------|     
     #| Convert cortisol values per day to per minutes |
@@ -364,7 +364,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],days)
     week_csa.save_output(folder,'TNF.csv',outputs_wcsa[6],days)
     week_csa.save_output(folder,'cortisol.csv',outputs_wcsa[7],days)
-    week_csa.plots_w_c_sa(t_wcsa,outputs_wcsa,days)
+    week_csa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,days)
     
     # write last simulation to file
     '''
@@ -404,9 +404,9 @@ if __name__ == "__main__":
     #cortisolDecadesOneDay()
     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
     # quando funcionar criar o loop e chamar uma vez para cada decada 
-    #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
+    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
 
-    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
+    #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
     end = time.time()
     print(f"Time: {int(end - start)}s" )
     

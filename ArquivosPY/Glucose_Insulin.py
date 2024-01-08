@@ -179,7 +179,7 @@ def Glucose_Insulin(flag,params):
     return [t, outputs]
 
 
-def plot_GI(t, outputs, day):
+def plot_GI(t, folder,outputs, day):
 
     print(f'Glucose Dia: {day}')
     #if day == 1:
@@ -205,7 +205,8 @@ def plot_GI(t, outputs, day):
     plt.ylabel("concentration (normalized)")    
     plt.legend(ncol = 3, loc='upper center',bbox_to_anchor = (0.5,-0.13),  fontsize = 11)
     plt.tight_layout()
-    plt.savefig('Glucose Insulin.png')
+    filename = f'{folder}/{day}_Glucose_Insulin.png'
+    plt.savefig(filename)
     #else:
     #    print(f"Dia>1: {day}")
     #plt.show()

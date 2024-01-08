@@ -175,7 +175,7 @@ def Week_Cortisol_Cytokines_SAureus(sim_time, params, ic):
      return [t, outputs]
 
 
-def plots_w_c_sa(t, outputs, day):
+def plots_w_c_sa(t, folder,outputs, day):
 
      [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = outputs
 
@@ -202,7 +202,7 @@ def plots_w_c_sa(t, outputs, day):
      fig.set_figwidth(10) 
      fig.set_figheight(6) 
      fig.tight_layout()
-     filename = f'{day}_Cytokines.png'
+     filename = f'{folder}/{day}_Cytokines.png'
      plt.savefig(filename)
 
      #Macrophage 
@@ -222,7 +222,7 @@ def plots_w_c_sa(t, outputs, day):
      fig.set_figwidth(10) 
      fig.set_figheight(6) 
      fig.tight_layout()
-     filename = f'{day}_Macrophage.png'
+     filename = f'{folder}/{day}_Macrophage.png'
      plt.savefig(filename)
 
      # S. aureus
@@ -239,7 +239,7 @@ def plots_w_c_sa(t, outputs, day):
      fig.set_figwidth(10) 
      fig.set_figheight(6) 
      fig.tight_layout()
-     filename = f'{day}_S_aureus.png'
+     filename = f'{folder}/{day}_S_aureus.png'
      plt.savefig(filename)
 
      fig, (ax3) = plt.subplots(1,1)
@@ -253,7 +253,7 @@ def plots_w_c_sa(t, outputs, day):
      fig.set_figwidth(8) 
      fig.set_figheight(6) 
      fig.tight_layout()
-     filename = f'{day}_Cortisol.png'
+     filename = f'{folder}/{day}_Cortisol.png'
      plt.savefig(filename)
 
      # TNF
@@ -266,7 +266,7 @@ def plots_w_c_sa(t, outputs, day):
      fig.set_figwidth(8) 
      fig.set_figheight(6) 
      fig.tight_layout()
-     filename = f'{day}_TNF.png'
+     filename = f'{folder}/{day}_TNF.png'
      plt.savefig(filename)
 
 
