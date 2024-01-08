@@ -360,7 +360,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     week_csa.save_output(folder,'ma.csv',outputs_wcsa[1],days)
     week_csa.save_output(folder,'mr.csv',outputs_wcsa[2],days)
     week_csa.save_output(folder,'il10.csv',outputs_wcsa[3],days)
-    wcsa.save_output(folder,'il6.csv',outputs_wcsa[4],days)
+    wcsa.save_output(folder,'il6.csv',outputs_wcsa[4],days)git 
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],days)
     week_csa.save_output(folder,'TNF.csv',outputs_wcsa[6],days)
     week_csa.save_output(folder,'cortisol.csv',outputs_wcsa[7],days)
