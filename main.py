@@ -1,8 +1,7 @@
 from urllib.parse import DefragResultBytes
-import W_Cortisol_Cytokines_SAureus as wcsa
-import Week_Cortisol_Cytokines_SAureus as week_csa
-import post_processing 
-import Glucose_Insulin as gi
+import ArquivosPY.W_Cortisol_Cytokines_SAureus as wcsa
+import ArquivosPY.Week_Cortisol_Cytokines_SAureus as week_csa
+import ArquivosPY.Glucose_Insulin as gi
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -283,7 +282,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     avg_cor = cortisol_gi.iloc[::480000].mean()['values']
     #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
     data = [0, avg_cor, cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-    with open (out_filename, 'a') as f:
+    with open (folder+out_filename, 'a') as f:
         writer = csv.writer(f)
         writer.writerow(data)
         
