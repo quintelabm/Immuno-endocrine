@@ -22,7 +22,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
     else:
         folder = 'Output/male'
         out_filename = 'average_cortisol_male.csv'
-    f = open (out_filename, 'w')
+    f = open (folder+out_filename, 'w')
     
     # Load experimental data from file
     headers = ['decade', 'value']
@@ -110,7 +110,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         avg_cor = cortisol_gi.iloc[::480000].mean()['values']
         #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
         data = [i, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-        with open (out_filename, 'a') as f:
+        with open (folder+out_filename, 'a') as f:
             writer = csv.writer(f)
             writer.writerow(data)
             
@@ -185,7 +185,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
             print("tamanho da media do COR: ", np.size(avg_cor))
             data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            with open (out_filename, 'a') as f:
+            with open (folder+out_filename, 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
         
