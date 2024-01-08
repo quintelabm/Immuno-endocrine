@@ -26,12 +26,13 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
     
     # Load experimental data from file
     headers = ['decade', 'value']
-    cortisol_female = pd.read_csv('cortisol_data_female.csv', names=headers)
+    folder_input = '../input/'
+    cortisol_female = pd.read_csv(folder_input+'cortisol_data_female.csv', names=headers)
     cortisol_female_5 = cortisol_female.tail(6)
     cortisol_female_5.reset_index(inplace=True)
     #print(cortisol_female_5)
 
-    cortisol_male = pd.read_csv('cortisol_data_male.csv', names=headers)
+    cortisol_male = pd.read_csv(folder_input+'cortisol_data_male.csv', names=headers)
     cortisol_male_5 = cortisol_male.tail(6)
     cortisol_male_5.reset_index(inplace=True)
     
