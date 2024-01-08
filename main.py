@@ -26,7 +26,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
     
     # Load experimental data from file
     headers = ['decade', 'value']
-    folder_input = '../input/'
+    folder_input = 'Input/'
     cortisol_female = pd.read_csv(folder_input+'cortisol_data_female.csv', names=headers)
     cortisol_female_5 = cortisol_female.tail(6)
     cortisol_female_5.reset_index(inplace=True)
