@@ -1,7 +1,7 @@
 from urllib.parse import DefragResultBytes
-import ArquivosPY.W_Cortisol_Cytokines_SAureus as wcsa
-import ArquivosPY.Week_Cortisol_Cytokines_SAureus as week_csa
-import ArquivosPY.Glucose_Insulin as gi
+import src.W_Cortisol_Cytokines_SAureus as wcsa
+import src.Week_Cortisol_Cytokines_SAureus as week_csa
+import src.Glucose_Insulin as gi
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +16,8 @@ import time
 
 def cortisolDecadesOneDay(simulation, cortisol_exp):
     # Number of days for the simulation 
-    days = 7
+    #@todo simulation fails if number of days is 7
+    days = 6
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
