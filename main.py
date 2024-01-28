@@ -197,6 +197,13 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         #### end for (time loop) ####
         
 #-----------------------------------------------------------------------------------------------------------------------
+                
+
+# /*******************************************************************************
+#  * @param simulation - F for female and M for male
+#  * @param cortisol_exp
+#  ******************************************************************************/
+
 def cortisolDecadesOneWeek(simulation, cortisol_exp):
 
     # Number of days for the simulation 
