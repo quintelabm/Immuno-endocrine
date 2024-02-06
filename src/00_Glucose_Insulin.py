@@ -106,6 +106,12 @@ sim_time = 1440 #24 hours         #Total time of simulation in min
 deltaT = pow(10, -3) # -          # Step size
 
 t = np.arange(0,sim_time,deltaT)
+
+# /*******************************************************************************
+#  * @param y - equations
+#  * @param t - evenly spaced array with time of simulation
+#  ******************************************************************************/
+
 def f(y,t):
     #Define equations + variables
     # Equation Number (python 0-indexes but mathematical convention uses 1-index hence the discrepancy)

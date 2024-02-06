@@ -186,7 +186,10 @@ t = np.arange(0,sim_time,deltaT)
 #t= np.arange(0,1400) #24 hours, 1 datapoint per minute ELLIOT
 
 """## ODE System"""
-
+# /*******************************************************************************
+#  * @param y - equations of simulation
+#  * @param t - evenly spaced array with time of simulation
+#  ******************************************************************************/
 def f(y, t):
     A = y[0]
     MA = y[1]

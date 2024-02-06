@@ -13,6 +13,12 @@ import matplotlib.pyplot as plt
 import math
 import csv
 
+# /*******************************************************************************
+#  * @param y - equations of simulation
+#  * @param t - evenly spaced array with time of simulation
+#  * @param flag - 
+#  * @param params - 
+#  ******************************************************************************/
 def f(y, t, flag, params):
 
     b1 = 0.0059           # min^-1              # Insulin independent glucose utilization

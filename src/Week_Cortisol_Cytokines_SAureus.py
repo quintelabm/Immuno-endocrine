@@ -17,6 +17,12 @@ import csv
 # Mathematical model of the immune response activation including cortisol and glucose dynamics
 # Obs: All the rates are represented per day
 
+# /*******************************************************************************
+#  * @param y - equations of simulation
+#  * @param t - evenly spaced array with time of simulation
+#  * @param flag - 
+#  * @param params - 
+#  ******************************************************************************/
 def f(t, y, flag, params):
      
      # Parameters by Brady et al., (2016):
@@ -129,6 +135,11 @@ def f(t, y, flag, params):
 
      return [dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt]
 
+# /*******************************************************************************
+#  * @param sim_time - simulation time, in days
+#  * @param params - 
+#  * @param ic - 
+#  ******************************************************************************/
 def Week_Cortisol_Cytokines_SAureus(sim_time, params, ic):
      '''
      # Initial Conditions by experimental data
@@ -269,7 +280,12 @@ def plots_w_c_sa(t, folder,outputs, day):
      filename = f'{folder}/{day}_TNF.png'
      plt.savefig(filename)
 
-
+# /*******************************************************************************
+#  * @param folder - folder directory to be saved
+#  * @param filename - name of file to be saved
+#  * @param outputs - outputs to be written in the file
+#  * @param day - current day
+#  ******************************************************************************/
 def save_output(folder,filename, outputs, day):
      ### create new file 
      nfilename = f'{folder}/{day}_'+filename

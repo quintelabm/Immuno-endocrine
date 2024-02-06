@@ -99,7 +99,10 @@ deltaT = pow(10, -4)   # -            # Step size
 t = np.arange(0,sim_time,deltaT)
 
 """## ODE System"""
-
+# /*******************************************************************************
+#  * @param y - equations of simulation
+#  * @param t - evenly spaced array with time of simulation
+#  ******************************************************************************/
 def f(y, t):
     A = y[0]
     MA = y[1]
