@@ -17,7 +17,7 @@ import time
 def cortisolDecadesOneDay(simulation, cortisol_exp):
     # Number of days for the simulation 
     #@todo simulation fails if number of days is 7
-    days = 6
+    days = 2
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
