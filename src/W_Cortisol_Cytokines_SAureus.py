@@ -111,7 +111,6 @@ def f(t, y, flag, params):
           
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
-     #added cortisol influence term: - klt*COR*(1-COR/(COR+kmct))
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
                + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt*COR*(1-COR/(COR+kmct))\
                 - k_6 * (IL6 - q_IL6)
