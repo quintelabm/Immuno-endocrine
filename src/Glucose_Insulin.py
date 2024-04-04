@@ -182,6 +182,8 @@ def Glucose_Insulin(flag,params):
     G4 = sol[:,15]
     
     outputs = [S, D, G, I, W, E, L, M, A, Y, Q, H, II, IG, G4m, G4]
+    print("OUTPUTS: ", outputs)
+    print("T: ", t)
     return [t, outputs]
 
 

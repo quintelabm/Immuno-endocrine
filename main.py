@@ -7,6 +7,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 import time
+import uncertainpy as un
+import chaospy as cp
+from scipy.integrate import odeint
 
 
 # /*******************************************************************************
@@ -14,20 +17,21 @@ import time
 #  * @param cortisol_exp
 #  ******************************************************************************/
 
-def cortisolDecadesOneDay(simulation, cortisol_exp):
+def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
     # Number of days for the simulation 
-    #@todo simulation fails if number of days is 7
-    days = 6
+    #TODO: simulation fails if number of days is 7
+    days = 1
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
 
     if(simulation=='F'):
-        folder = 'Output/female'
+        folder = 'Output/female/'
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male'
+        folder = 'Output/male/'
         out_filename = 'average_cortisol_male.csv'
+    print('folder:', folder+out_filename)
     f = open (folder+out_filename, 'w')
     
     # Load experimental data from file
@@ -71,7 +75,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             ### call first time of wcsa glucose insulin model outside of time loop
             ### INITIAL CONDITIONS FIRST DAY ###
             ic = [2,0,10,0,0,0.7,0.17,2.32]
-            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic) 
+            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic, parameters) 
             ### plot results from the first model 
             ### todo: parameterize with number of saved files we want
             ### as we expect to run for several years
@@ -81,7 +85,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
             wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
             wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-            wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+            # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
             
         ########################################################        
         #### convert cortisol values per day to per minutes ####
@@ -124,6 +128,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         ### run Glucose-Insulin model sending cortisol values ###
         #########################################################
         print(f'Runing glucose model day {i}...')
+
         [t_gi, outputs_gi] = gi.Glucose_Insulin(1,cortisol_gi)
         gi.save_output(folder,'glucose.csv',outputs_gi[11],i)
         #[t_gi, outputs_gi] = gi.Glucose_Insulin(0,df)
@@ -162,7 +167,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             cortisol_exp = cortisol_male_5.at[i,'value']
         ic = [2,0,10,0,0,0.7,0.17,cortisol_exp]
         # print(ic)
-        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic)
+        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, parameters)
         # write on file
         wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
         wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
@@ -170,7 +175,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
         wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
         wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-        wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+        # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
         
         # write last simulation to file
         if (i==(days-1)):
@@ -274,7 +279,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],0)
     wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],0)
     wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],0)
-    wcsa.plots_w_c_sa(t_wcsa1,folder,outputs_wcsa,0)
+    # wcsa.plots_w_c_sa(t_wcsa1,folder,outputs_wcsa,0)
     
     #|------------------------------------------------|     
     #| Convert cortisol values per day to per minutes |
@@ -378,7 +383,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],days)
     week_csa.save_output(folder,'TNF.csv',outputs_wcsa[6],days)
     week_csa.save_output(folder,'cortisol.csv',outputs_wcsa[7],days)
-    week_csa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,days)
+    # week_csa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,days)
     
     # write last simulation to file
     '''
@@ -405,25 +410,72 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
             writer.writerow(data)
     '''
     #### end for (time loop) ####
-        
+
+
+def citokynes(ktc,kmtc):
+  parameters = [ktc,kmtc]
+  simulation = 'F'
+  output = cortisolDecadesOneDay(simulation, parameters,
+                                 cortisol_exp=2.32)
+  [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = output
+  return time, out_IL6
+
 
 
 if __name__ == "__main__":
     start = time.time()
-    simulation = 'F'
 
-    #todozao: Fazer o teste mantendo o valor do cortisol fixo e testar da glucose fixa
-    # tb pra ver a variação das citocinas com os 7 dias por decada
+     # Create the distributions
+    ktc  = cp.Uniform(2.43, 4.43)         # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+    kmtc = cp.Uniform(1.78, 3.78)  
 
-    #cortisolDecadesOneDay()
-    # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
-    # quando funcionar criar o loop e chamar uma vez para cada decada 
-    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
+    # Create a model from the function and add labels
+    model = un.Model(citokynes, labels=["Time (s)", "IL6 (pg/mL)"])
 
-    #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
+    # Define the parameters dictionary
+    parameters = {
+        "ktc": ktc,
+        "kmtc": kmtc
+    }
+
+    # We can use the parameters dictionary directly
+    # when we set up the uncertainty quantification
+    UQ = un.UncertaintyQuantification(model=model, parameters=parameters)
+
+    # Perform the uncertainty quantification,
+    # which automatically use the Rosenblatt transformation
+    # We set the seed to easier be able to reproduce the result
+    data = UQ.quantify(seed=10)
+
     end = time.time()
     print(f"Time: {int(end - start)}s" )
     
     print('Simulation done. Bye!')
     ### save cortisol graph
     ##post_processing(out_filename)
+
+        
+
+
+# if __name__ == "__main__":
+#     start = time.time()
+#     simulation = 'F'
+
+#     #todozao: Fazer o teste mantendo o valor do cortisol fixo e testar da glucose fixa
+#     # tb pra ver a variação das citocinas com os 7 dias por decada
+
+#     ktc  = 3.43       # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+#     kmtc = 2.78
+
+#     #cortisolDecadesOneDay()
+#     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
+#     # quando funcionar criar o loop e chamar uma vez para cada decada 
+#     cortisolDecadesOneDay(simulation=simulation, parameters=[ktc, kmtc], cortisol_exp=2.32)
+
+#     #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
+#     end = time.time()
+#     print(f"Time: {int(end - start)}s" )
+    
+#     print('Simulation done. Bye!')
+#     ### save cortisol graph
+#     ##post_processing(out_filename)

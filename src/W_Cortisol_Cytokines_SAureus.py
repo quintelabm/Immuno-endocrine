@@ -23,7 +23,7 @@ import csv
 #  * @param flag - 
 #  * @param params - 
 #  ******************************************************************************/
-def f(t, y, flag, params):
+def f(t, y, flag, params, parameters):
      
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
@@ -64,9 +64,9 @@ def f(t, y, flag, params):
      q_TNF = 0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
-     ktc  = 3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+     ktc  = parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
      kmct = 8.69            # ng/mL                                                 # 
-     kmtc = 2.78            # pg/mL                                                 # 
+     kmtc = parameters[1] #2.78            # pg/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt = 3.35             # h^-1
      Cmax = 3
@@ -138,7 +138,7 @@ def f(t, y, flag, params):
 #  * @param params - 
 #  * @param ic - 
 #  ******************************************************************************/
-def W_Cortisol_Cytokines_SAureus(flag, params, ic):
+def W_Cortisol_Cytokines_SAureus(flag, params, ic, parameters):
      '''
      # Initial Conditions by experimental data
      A = 2                  # Cell/mm3 # S. aureus Bacteria               
@@ -168,7 +168,7 @@ def W_Cortisol_Cytokines_SAureus(flag, params, ic):
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0,sim_time,deltaT)
 
-     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params), t_eval=t)
+     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, parameters), t_eval=t)
      
      out_A = sol.y[0]
      out_MA = sol.y[1]
