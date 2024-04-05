@@ -93,11 +93,9 @@ def f(t, y, flag, params, parameters):
           gluc = 0
      else:
           #result_index = glucose[0].sub(t).abs().idxmin()
-          closest_index = params['index'].sub(t).abs().idxmin()
-          #print(result_index)  
+          closest_index = params['index'].sub(t).abs().idxmin()  
           #glucose = pd.DataFrame(params[0])
           gluc = params.at[closest_index,'values']
-          #print(gluc)
 
      dAdt = (beta_A * A *(1 - (A / k_A)) - m_A * A * MA)
 

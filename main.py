@@ -193,18 +193,12 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             
             avg_cor = cortisol_gi.iloc[::480000].mean()['values']
             #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
-            print("tamanho da media do COR: ", np.size(avg_cor))
             data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            print("mostrando data da linha 198")
-            print(data)
             with open (folder+out_filename, 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
-        print("saiu do if")
-        print("i: ", i)
         #### end for (time loop) ####
-    print("saiu do for")
-    return outputs_wcsa
+    return [t_wcsa, outputs_wcsa]
 
         
 #-----------------------------------------------------------------------------------------------------------------------
@@ -420,13 +414,11 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
 def citokynes(ktc,kmtc):
   parameters = [ktc,kmtc]
   simulation = 'F'
-  print("vai entrar no cortisolDecadesOneDay")
   output = cortisolDecadesOneDay(simulation, parameters,
                                  cortisol_exp=2.32)
-  print("saiu do cortisolDecadesOneDay")
-  print(output)
-  [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = output
-  return time, out_IL6
+  [t_wcsa, outputs_wcsa] = output
+  [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = outputs_wcsa
+  return t_wcsa, out_IL6
 
 
 
