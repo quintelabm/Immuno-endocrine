@@ -204,7 +204,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
         print("i: ", i)
         #### end for (time loop) ####
     print("saiu do for")
-    return outputs_wcsa
+    return  [t_wcsa, outputs_wcsa]
 
         
 #-----------------------------------------------------------------------------------------------------------------------
