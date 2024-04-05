@@ -18,8 +18,7 @@ from scipy.integrate import odeint
 #  ******************************************************************************/
 
 def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
-    # Number of days for the simulation 
-    #TODO: simulation fails if number of days is 7
+    # Number of days for the simulation (first day is 0)
     days = 1
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
@@ -196,11 +195,17 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
             print("tamanho da media do COR: ", np.size(avg_cor))
             data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
+            print("mostrando data da linha 198")
+            print(data)
             with open (folder+out_filename, 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
-        
+        print("saiu do if")
+        print("i: ", i)
         #### end for (time loop) ####
+    print("saiu do for")
+    return outputs_wcsa
+
         
 #-----------------------------------------------------------------------------------------------------------------------
                 
@@ -415,8 +420,11 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
 def citokynes(ktc,kmtc):
   parameters = [ktc,kmtc]
   simulation = 'F'
+  print("vai entrar no cortisolDecadesOneDay")
   output = cortisolDecadesOneDay(simulation, parameters,
                                  cortisol_exp=2.32)
+  print("saiu do cortisolDecadesOneDay")
+  print(output)
   [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = output
   return time, out_IL6
 
@@ -445,7 +453,11 @@ if __name__ == "__main__":
     # Perform the uncertainty quantification,
     # which automatically use the Rosenblatt transformation
     # We set the seed to easier be able to reproduce the result
+    print("vai passar pelo quantify")
     data = UQ.quantify(seed=10)
+
+    print('DATA AQUI!')
+    print(data)
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )
