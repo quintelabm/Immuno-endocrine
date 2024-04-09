@@ -288,8 +288,8 @@ def plots_w_c_sa(t, folder, outputs, day):
 def save_output(folder,filename, outputs, day):
      ### create new file 
      nfilename = f'{folder}/{day}_'+filename
-     f = open (nfilename, 'w')
-     with open (nfilename, 'a') as f:
+     f = open (nfilename, 'w+')
+     with open (nfilename, 'a+') as f:
           writer = csv.writer(f)
           writer.writerow(outputs)  
      

@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 import time
+import os
 
 
 # /*******************************************************************************
@@ -23,12 +24,13 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
     # create new file 
 
     if(simulation=='F'):
-        folder = 'Output/female'
+        folder = f'Output/female_{cortisol_exp}'
+        os.mkdir(folder)
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male'
+        folder = f'Output/male_{cortisol_exp}'
         out_filename = 'average_cortisol_male.csv'
-    f = open (folder+out_filename, 'w')
+    f = open (folder+out_filename, 'w+')
     
     # Load experimental data from file
     headers = ['decade', 'value']
@@ -116,7 +118,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
         avg_cor = cortisol_gi.iloc[::480000].mean()['values']
         #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
         data = [i, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-        with open (folder+out_filename, 'a') as f:
+        with open (folder+out_filename, 'a+') as f:
             writer = csv.writer(f)
             writer.writerow(data)
             
@@ -191,7 +193,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
             #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
             print("tamanho da media do COR: ", np.size(avg_cor))
             data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            with open (folder+out_filename, 'a') as f:
+            with open (folder+out_filename, 'a+') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
         
@@ -214,12 +216,12 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     # create new file 
     
     if(simulation=='F'):
-        folder = 'Output/female/'
+        folder = f'Output/female_{cortisol_exp}_week'
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male/'
+        folder = f'Output/male_{cortisol_exp}_week'
         out_filename = 'average_cortisol_male.csv'
-    f = open (out_filename, 'w')
+    f = open (out_filename, 'w+')
     
     '''     
     ### load experimental data from file
@@ -296,7 +298,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     avg_cor = cortisol_gi.iloc[::480000].mean()['values']
     #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
     data = [0, avg_cor, cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-    with open (folder+out_filename, 'a') as f:
+    with open (folder+out_filename, 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(data)
         
