@@ -69,6 +69,7 @@ def f(t, y, flag, params):
      kmtc = 2.78            # pg/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt = 3.35             # h^-1
+     klt6 = 1.35             # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
@@ -112,7 +113,7 @@ def f(t, y, flag, params):
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
-               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt*COR*(1-COR/(COR+kmct))\
+               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
                 - k_6 * (IL6 - q_IL6)
      
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
