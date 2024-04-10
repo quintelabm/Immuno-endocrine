@@ -18,19 +18,21 @@ import os
 def cortisolDecadesOneDay(simulation, cortisol_exp):
     # Number of days for the simulation 
     #@todo simulation fails if number of days is 7
-    days = 1
+    days = 2
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
 
     if(simulation=='F'):
         folder = f'Output/female_{cortisol_exp}'
-        os.mkdir(folder)
         out_filename = 'average_cortisol_female.csv'
     else:
         folder = f'Output/male_{cortisol_exp}'
         out_filename = 'average_cortisol_male.csv'
-    f = open (folder+out_filename, 'w+')
+    
+    if not os.path.exists(folder): 
+        os.mkdir(folder)
+    f = open (folder+out_filename, 'w')
     
     # Load experimental data from file
     headers = ['decade', 'value']
@@ -420,7 +422,7 @@ if __name__ == "__main__":
     #cortisolDecadesOneDay()
     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
     # quando funcionar criar o loop e chamar uma vez para cada decada 
-    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.80)
+    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=1.65)
 
     #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
     end = time.time()

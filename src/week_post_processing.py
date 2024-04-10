@@ -157,18 +157,30 @@ def post_processing(days):
     # TNF
     fig, (ax2) = plt.subplots(1,1)  
     # todo: repeticao para pegar de cada pasta (valores de cortisol j)
-    # todo: parametrizar para numero de dias simulado
-    for i in range(1,days):
-        fname = f'Output/female_{j}/{i}_TNF.csv'
-        valor = pd.read_csv(fname, header=None)
-        y = valor.T
-        d = decades[i]
-        label = f'Década {d}'
-        x = np.linspace(0,days,7000)
-        # todo : alterar para plotar IL-6
-        out_TNF = y[0]
-        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
-        ax2.plot(x,out_TNF,'.',label=label)
+    cortisol_exp = [1.65,2.24]
+    for j in range(1,2):
+        # todo: parametrizar para numero de dias simulado
+        for i in range(1,days):
+            fname = f'Output/female_{cortisol_exp[j]}/{i}_TNF.csv'
+            valor = pd.read_csv(fname, header=None)
+            y = valor.T
+            d = decades[j]
+            label = f'Década {d}'
+            x = np.linspace(0,days,1000)
+            # todo : alterar para plotar IL-6
+            out_TNF = y[0]
+            #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+            ax2.plot(x,out_TNF,'.',label=label)
+
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('TNF-α concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/tnf.png', bbox_inches='tight')
+
 
 if __name__ == "__main__":
     #week_post_processing()
