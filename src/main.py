@@ -420,7 +420,7 @@ if __name__ == "__main__":
     #cortisolDecadesOneDay()
     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
     # quando funcionar criar o loop e chamar uma vez para cada decada 
-    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
+    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.80)
 
     #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
     end = time.time()
