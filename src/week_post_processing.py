@@ -133,10 +133,6 @@ def week_post_processing():
 
 
 
-
-
-
-
 '''
     for i in range(1,6):
         fname = f'Output/cortisol/1_cortisol.csv'
@@ -154,5 +150,26 @@ def week_post_processing():
 
 '''
 
+def post_processing(days):
+    #--- Generate Cortisol Plot by paper ---
+    decades = ['30-40', '40-50', '50-60', '60-70', '70-80', '80-90']
+
+    # TNF
+    fig, (ax2) = plt.subplots(1,1)  
+    # todo: repeticao para pegar de cada pasta (valores de cortisol j)
+    # todo: parametrizar para numero de dias simulado
+    for i in range(1,days):
+        fname = f'Output/female_{j}/{i}_TNF.csv'
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,days,7000)
+        # todo : alterar para plotar IL-6
+        out_TNF = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_TNF,'.',label=label)
+
 if __name__ == "__main__":
-    week_post_processing()
+    #week_post_processing()
+    post_processing(2)
