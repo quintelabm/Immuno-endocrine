@@ -1,5 +1,5 @@
-import src.W_Cortisol_Cytokines_SAureus as wcsa
-import src.Glucose_Insulin as gi
+import W_Cortisol_Cytokines_SAureus as wcsa
+import Glucose_Insulin as gi
 import numpy as np
 import pandas as pd
 import csv
