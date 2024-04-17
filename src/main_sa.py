@@ -8,13 +8,14 @@ import numpy as np
 
 
 def citokynes(ktc,kmtc):
-  parameters = [ktc,kmtc]
+  parameters = [ktc, kmtc]
+  print("parameters", parameters)
   simulation = 'F'
-  output = cdd.cortisolDecadesOneDay(simulation, parameters,
-                                 cortisol_exp=2.32)
+  output = cdd.cortisolDecadesOneDay(simulation, parameters, cortisol_exp=2.32)
   [t_wcsa, outputs_wcsa] = output
   [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = outputs_wcsa
-  return t_wcsa, out_IL6
+  return out_IL6[-1]
+  #return t_wcsa, out_IL6
 
 
 
@@ -34,13 +35,14 @@ if __name__ == "__main__":
 
     for i, X in enumerate(param_values):
         print("X", X)
-        model[i] = evaluate_model(X)
+        [ktc, kmtc] = X
+        model[i] = citokynes(ktc,kmtc)
 
     Si = sobol.analyze(problem, model)
 
     print(Si['S1'])
-
-    #Si.plot()
+  
+    Si.plot()
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )
