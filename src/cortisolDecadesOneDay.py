@@ -4,26 +4,31 @@ import numpy as np
 import pandas as pd
 import csv
 import time
+import os 
+
 
 # /*******************************************************************************
 #  * @param simulation - F for female and M for male
 #  * @param cortisol_exp
 #  ******************************************************************************/
 
-def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
-    # Number of days for the simulation (first day is 0)
-    days = 1
+def cortisolDecadesOneDay(simulation, cortisol_exp):
+    # Number of days for the simulation 
+    #@todo simulation fails if number of days is 7
+    days = 2
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
 
     if(simulation=='F'):
-        folder = 'Output/female/'
+        folder = f'Output/female_{cortisol_exp}'
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male/'
+        folder = f'Output/male_{cortisol_exp}'
         out_filename = 'average_cortisol_male.csv'
-    print('folder:', folder+out_filename)
+    
+    if not os.path.exists(folder): 
+        os.mkdir(folder)
     f = open (folder+out_filename, 'w')
     
     # Load experimental data from file
@@ -67,7 +72,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             ### call first time of wcsa glucose insulin model outside of time loop
             ### INITIAL CONDITIONS FIRST DAY ###
             ic = [2,0,10,0,0,0.7,0.17,2.32]
-            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic, parameters) 
+            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic, [3.43, 2.78]) 
             ### plot results from the first model 
             ### todo: parameterize with number of saved files we want
             ### as we expect to run for several years
@@ -77,7 +82,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
             wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
             wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-            # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+            wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
             
         ########################################################        
         #### convert cortisol values per day to per minutes ####
@@ -112,7 +117,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
         avg_cor = cortisol_gi.iloc[::480000].mean()['values']
         #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
         data = [i, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-        with open (folder+out_filename, 'a') as f:
+        with open (folder+out_filename, 'a+') as f:
             writer = csv.writer(f)
             writer.writerow(data)
             
@@ -120,7 +125,6 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
         ### run Glucose-Insulin model sending cortisol values ###
         #########################################################
         print(f'Runing glucose model day {i}...')
-
         [t_gi, outputs_gi] = gi.Glucose_Insulin(1,cortisol_gi)
         gi.save_output(folder,'glucose.csv',outputs_gi[11],i)
         #[t_gi, outputs_gi] = gi.Glucose_Insulin(0,df)
@@ -159,7 +163,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             cortisol_exp = cortisol_male_5.at[i,'value']
         ic = [2,0,10,0,0,0.7,0.17,cortisol_exp]
         # print(ic)
-        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, parameters)
+        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, parameters=[3.43, 2.78])
         # write on file
         wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
         wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
@@ -167,7 +171,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
         wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
         wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
         wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-        # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+        wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
         
         # write last simulation to file
         if (i==(days-1)):
@@ -186,13 +190,13 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             
             avg_cor = cortisol_gi.iloc[::480000].mean()['values']
             #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
+            print("tamanho da media do COR: ", np.size(avg_cor))
             data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            with open (folder+out_filename, 'a') as f:
+            with open (folder+out_filename, 'a+') as f:
                 writer = csv.writer(f)
                 writer.writerow(data)
+        
         #### end for (time loop) ####
-    return [t_wcsa, outputs_wcsa]
-
         
 #-----------------------------------------------------------------------------------------------------------------------
-                
+ 

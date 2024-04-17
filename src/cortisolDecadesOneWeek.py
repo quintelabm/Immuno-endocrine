@@ -4,6 +4,7 @@ import Glucose_Insulin as gi
 import numpy as np
 import pandas as pd
 import csv
+import os 
 
 # /*******************************************************************************
 #  * @param simulation - F for female and M for male
@@ -19,12 +20,12 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     # create new file 
     
     if(simulation=='F'):
-        folder = 'Output/female/'
+        folder = f'Output/female_{cortisol_exp}_week'
         out_filename = 'average_cortisol_female.csv'
     else:
-        folder = 'Output/male/'
+        folder = f'Output/male_{cortisol_exp}_week'
         out_filename = 'average_cortisol_male.csv'
-    f = open (out_filename, 'w')
+    f = open (out_filename, 'w+')
     
     '''     
     ### load experimental data from file
@@ -79,7 +80,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],0)
     wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],0)
     wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],0)
-    # wcsa.plots_w_c_sa(t_wcsa1,folder,outputs_wcsa,0)
+    wcsa.plots_w_c_sa(t_wcsa1,folder,outputs_wcsa,0)
     
     #|------------------------------------------------|     
     #| Convert cortisol values per day to per minutes |
@@ -89,8 +90,11 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     cortisol_wcsa = pd.DataFrame(outputs_wcsa[7], columns = ['values'])
 
     # Extract 1000 cortisol values (each 1440 steps)
+    print("tamanho cortisol wcsa: ", np.size(cortisol_wcsa))
+
     #cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 1440, axis=0))
     cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 720, axis=0))
+    #print("tamanho cortisol gi: ", np.size(cortisol_gi))
     cortisol_gi.columns = ['values']
     cortisol_gi.set_index(t_gi, inplace=True)
     cortisol_gi.reset_index(inplace=True)
@@ -98,7 +102,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     avg_cor = cortisol_gi.iloc[::480000].mean()['values']
     #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
     data = [0, avg_cor, cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-    with open (folder+out_filename, 'a') as f:
+    with open (folder+out_filename, 'a+') as f:
         writer = csv.writer(f)
         writer.writerow(data)
         
@@ -115,17 +119,44 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     
     last_value = gluc_intake_gi['values'].iat[-1]
     temp_gluc_gi = pd.DataFrame(np.repeat(last_value, 720000, axis=0), columns = ['values'])
+    #print(temp_gluc_gi.head())
     #print("Tamanho glicose temp: ", np.size(temp_gluc_gi))#840000
     complete_gluc_gi = pd.concat([gluc_intake_gi,temp_gluc_gi])
+    # print('ultimo valor? ', gluc_intake_gi[-1])
+    #complete_gluc_gi = pd.DataFrame(np.repeat(gluc_intake_gi.values, 2, axis=0))
+    #print("Tamanho glicose completo: ", np.size(complete_gluc_gi))#840000
+    ### Obtain cortisol 1440000 points
+    #gluc_intake_wcsa = gluc_intake_gi.iloc[::1440]
 
-    # Glicose para 1 semana
-    gluc_intake_wcsa = complete_gluc_gi.iloc[::1440] 
+    gluc_intake_wcsa = complete_gluc_gi.iloc[::1440]
+    print(" O Tamanho glicose wcsa: ", np.size(gluc_intake_wcsa)) #1000
+ 
     gluc_intake_wcsa = pd.concat([gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa], axis =0) # 7 days = 70000
+    print("O tamanho da glicose para 1 semana é:", np.size(gluc_intake_wcsa))
+    print("gluc = \n:", gluc_intake_wcsa)
+
     #gluc_intake_wcsa['indices'] = t_wcsa
     
     #gluc_intake_wcsa.reset_index(drop = True, inplace=True) # 0 até 699
     gluc_intake_wcsa.set_index(t_wcsa, inplace=True)
     gluc_intake_wcsa.reset_index(inplace=True)
+
+   #gluc_intake_wcsa.columns = ['index','values' inplace = True]
+    #gluc_intake_wcsa.rename(columns = {'':'index'}, inplace =True)
+    ##gluc_intake_wcsa.index.name = 'index'
+    print("Tamanho t_wcsa", np.size(t_wcsa))
+    #print("O tamanho da glicose para 1 semana é:", np.size(gluc_intake_wcsa))
+    print("gluc = \n:", gluc_intake_wcsa)
+
+    #print("index: ",  gluc_intake_wcsa.indices.to_string(index=False))
+ 
+    #print(gluc_intake_wcsa)
+    ### indice = gluc_intake_wcsa['index'].sub(t_wcsa).abs().idxmin()
+    #indice = gluc_intake_wcsa.index.sub(t_wcsa).abs().idxmin()
+    #tempo = t_wcsa*7
+    #print("tempo wcsa:", np.size(t_wcsa))
+    #print("tempo:", np.size(tempo))
+    #print("esse é o indice: ", indice)
     
     #|--------------------------------------------------------------------------|
     #| run Cell-Cytokine-Cortisol Model with glucose output from other model    |
@@ -153,7 +184,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     wcsa.save_output(folder,'il8.csv',outputs_wcsa[5],days)
     week_csa.save_output(folder,'TNF.csv',outputs_wcsa[6],days)
     week_csa.save_output(folder,'cortisol.csv',outputs_wcsa[7],days)
-    # week_csa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,days)
+    week_csa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,days)
     
     # write last simulation to file
     '''
@@ -180,4 +211,4 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
             writer.writerow(data)
     '''
     #### end for (time loop) ####
-
+        
