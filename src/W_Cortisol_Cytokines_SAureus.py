@@ -23,7 +23,7 @@ import csv
 #  * @param flag - 
 #  * @param params - 
 #  ******************************************************************************/
-def f(t, y, flag, params):
+def f(t, y, flag, params, parameters):
      
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
@@ -64,11 +64,12 @@ def f(t, y, flag, params):
      q_TNF = 0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
-     ktc  = 3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+     ktc  = parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
      kmct = 8.69            # ng/mL                                                 # 
-     kmtc = 2.78            # pg/mL                                                 # 
+     kmtc = parameters[1] #2.78            # pg/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt = 3.35             # h^-1
+     klt6 = 1.35             # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
@@ -93,11 +94,9 @@ def f(t, y, flag, params):
           gluc = 0
      else:
           #result_index = glucose[0].sub(t).abs().idxmin()
-          closest_index = params['index'].sub(t).abs().idxmin()
-          #print(result_index)  
+          closest_index = params['index'].sub(t).abs().idxmin()  
           #glucose = pd.DataFrame(params[0])
           gluc = params.at[closest_index,'values']
-          #print(gluc)
 
      dAdt = (beta_A * A *(1 - (A / k_A)) - m_A * A * MA)
 
@@ -111,9 +110,9 @@ def f(t, y, flag, params):
           
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
-     
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
-               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - k_6 * (IL6 - q_IL6)
+               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
+                - k_6 * (IL6 - q_IL6)
      
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
                + pow(IL10, h_810)))) * MA - k_8 * (IL8 - q_IL8)
@@ -138,7 +137,7 @@ def f(t, y, flag, params):
 #  * @param params - 
 #  * @param ic - 
 #  ******************************************************************************/
-def W_Cortisol_Cytokines_SAureus(flag, params, ic):
+def W_Cortisol_Cytokines_SAureus(flag, params, ic, parameters):
      '''
      # Initial Conditions by experimental data
      A = 2                  # Cell/mm3 # S. aureus Bacteria               
@@ -168,7 +167,7 @@ def W_Cortisol_Cytokines_SAureus(flag, params, ic):
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0,sim_time,deltaT)
 
-     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params), t_eval=t)
+     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, parameters), t_eval=t)
      
      out_A = sol.y[0]
      out_MA = sol.y[1]
@@ -287,8 +286,8 @@ def plots_w_c_sa(t, folder, outputs, day):
 def save_output(folder,filename, outputs, day):
      ### create new file 
      nfilename = f'{folder}/{day}_'+filename
-     f = open (nfilename, 'w')
-     with open (nfilename, 'a') as f:
+     f = open (nfilename, 'w+')
+     with open (nfilename, 'a+') as f:
           writer = csv.writer(f)
           writer.writerow(outputs)  
      
