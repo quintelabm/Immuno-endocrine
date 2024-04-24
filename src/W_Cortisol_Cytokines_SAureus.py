@@ -23,7 +23,7 @@ import csv
 #  * @param flag - 
 #  * @param params - 
 #  ******************************************************************************/
-def f(t, y, flag, params, brady_parameters, cortisol_parameters):
+def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parameters):
      
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
@@ -137,7 +137,7 @@ def f(t, y, flag, params, brady_parameters, cortisol_parameters):
 #  * @param params - 
 #  * @param ic - 
 #  ******************************************************************************/
-def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_parameters):
+def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_parameters, quintela_parameters):
      '''
      # Initial Conditions by experimental data
      A = 2                  # Cell/mm3 # S. aureus Bacteria               
@@ -167,7 +167,7 @@ def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_pa
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0,sim_time,deltaT)
 
-     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, brady_parameters, cortisol_parameters), t_eval=t)
+     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, brady_parameters, cortisol_parameters, quintela_parameters), t_eval=t)
      
      out_A = sol.y[0]
      out_MA = sol.y[1]
