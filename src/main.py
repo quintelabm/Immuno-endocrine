@@ -18,7 +18,7 @@ import os
 def cortisolDecadesOneDay(simulation, cortisol_exp):
     # Number of days for the simulation 
     #@todo simulation fails if number of days is 7
-    days = 2
+    days = 5
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
@@ -422,9 +422,9 @@ if __name__ == "__main__":
     #cortisolDecadesOneDay()
     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
     # quando funcionar criar o loop e chamar uma vez para cada decada 
-    cortisolDecadesOneDay(simulation=simulation, cortisol_exp=1.65)
+    #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.24)
 
-    #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
+    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
     end = time.time()
     print(f"Time: {int(end - start)}s" )
     

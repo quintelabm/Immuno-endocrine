@@ -35,7 +35,7 @@ def post_processing():
     cortisol_male_5 = cortisol_male.tail(6)
     
     plt.figure()
-    ##plt.plot(x,y, label="Cortisol", c= 'g', linewidth=0.75)
+    #plt.plot(x,y, label="Cortisol", c= 'g', linewidth=0.75)
     #plt.plot(x,y, label="Cortisol", c= 'g', linewidth=2)
     plt.errorbar(x, y_f, std_f, fmt='ok', lw=1, label='Average (Model)')
     #plt.errorbar(y_f['index'], y_f, std_f, fmt='ok', lw=1, label='Average (Model)')

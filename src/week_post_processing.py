@@ -157,8 +157,9 @@ def post_processing(days):
     # TNF
     fig, (ax2) = plt.subplots(1,1)  
     # todo: repeticao para pegar de cada pasta (valores de cortisol j)
-    cortisol_exp = [1.65,2.24]
-    for j in range(1,2):
+    #cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
+    cortisol_exp = [2.32, 2.24]
+    for j in range(0,2):
         # todo: parametrizar para numero de dias simulado
         for i in range(1,days):
             fname = f'Output/female_{cortisol_exp[j]}/{i}_TNF.csv'
@@ -167,7 +168,6 @@ def post_processing(days):
             d = decades[j]
             label = f'Década {d}'
             x = np.linspace(0,days,1000)
-            # todo : alterar para plotar IL-6
             out_TNF = y[0]
             #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
             ax2.plot(x,out_TNF,'.',label=label)
