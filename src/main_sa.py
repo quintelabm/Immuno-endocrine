@@ -19,6 +19,7 @@ parametersDictionary = {
   'n_610': 34.8,
   'n_66': 560,
   'n_6TNF': 185,
+  'n_M10': 4.35, #da erro pra rodar a SA
   'n_MTNF': 0.1,
   'h_610': 4,
   'h_66': 1,
