@@ -13,7 +13,7 @@ parametersDictionary = {
   'kmct': 8.69,
   'kcd': 1.55,
   'klt': 3.35,
-  'klt6': 1.35,
+  'klt6': 1.35, #da erro pra rodar a SA
   'Cmax': 3,
 
   'n_610': 34.8,
@@ -25,7 +25,7 @@ parametersDictionary = {
   'h_610': 4,
   'h_66': 1,
   'h_6TNF': 2,
-  'q_IL6':0.6, #da erro pra rodar a SA
+  'q_IL6': 0.6, #da erro pra rodar a SA
 }
 
 def parametersInterval(parameters):
@@ -52,7 +52,7 @@ def citokynes(cortisol_parameters, brady_parameters):
 if __name__ == "__main__":
     start = time.time()
 
-    names = ['n_610', 'n_66', 'n_6TNF', 'h_610', 'h_66', 'h_6TNF', 'k_6', 'k_6m', 'k_6TNF', 'ktc', 'kmtc', 'kmct', 'klt6']
+    names = ['n_610', 'n_66', 'n_6TNF', 'h_610', 'h_66', 'h_6TNF', 'k_6', 'k_6m', 'k_6TNF', 'ktc', 'kmtc', 'kmct']
     problem = {
         'num_vars': np.size(names),
         'names': names,
@@ -63,8 +63,8 @@ if __name__ == "__main__":
     model_values = np.zeros(param_values.shape[0])
 
     for i, X in enumerate(param_values):
-        [n_610, n_66, n_6TNF, h_610, h_66, h_6TNF, k_6, k_6m, k_6TNF, ktc, kmtc, kmct, klt6] = X
-        cortisol_parameters = [ktc, kmtc, kmct, klt6]
+        [n_610, n_66, n_6TNF, h_610, h_66, h_6TNF, k_6, k_6m, k_6TNF, ktc, kmtc, kmct] = X
+        cortisol_parameters = [ktc, kmtc, kmct]
         brady_parameters = [n_610, n_66, n_6TNF, h_610, h_66, h_6TNF, k_6, k_6m, k_6TNF]
 
         model_values[i] = citokynes(cortisol_parameters, brady_parameters)

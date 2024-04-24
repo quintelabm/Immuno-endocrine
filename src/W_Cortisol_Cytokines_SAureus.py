@@ -69,7 +69,7 @@ def f(t, y, flag, params, brady_parameters, cortisol_parameters):
      kmct = cortisol_parameters[2] #8.69            # ng/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt  = 3.35             # h^-1
-     klt6 = cortisol_parameters[3] #1.35             # h^-1
+     klt6 = 1.35             # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
