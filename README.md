@@ -16,10 +16,10 @@ pip install -r requirements.txt
 Check number of days to simulate and run
 
 ```
-python3 main.py
+python src/main.py
 ```
 
 # To generate plots
 ```
-python3 post_processing.py
+python src/post_processing.py
 ```
