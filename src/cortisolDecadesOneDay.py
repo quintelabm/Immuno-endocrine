@@ -12,7 +12,7 @@ import os
 #  * @param cortisol_exp
 #  ******************************************************************************/
 
-def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
+def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, cortisol_exp):
     # Number of days for the simulation 
     #@todo simulation fails if number of days is 7
     days = 2
@@ -72,7 +72,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             ### call first time of wcsa glucose insulin model outside of time loop
             ### INITIAL CONDITIONS FIRST DAY ###
             ic = [2,0,10,0,0,0.7,0.17,2.32]
-            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic, parameters) 
+            [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,df,ic, brady_parameters, cortisol_parameters) 
             ### plot results from the first model 
             ### todo: parameterize with number of saved files we want
             ### as we expect to run for several years
@@ -163,7 +163,7 @@ def cortisolDecadesOneDay(simulation, parameters, cortisol_exp):
             cortisol_exp = cortisol_male_5.at[i,'value']
         ic = [2,0,10,0,0,0.7,0.17,cortisol_exp]
         # print(ic)
-        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, parameters)
+        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, brady_parameters, cortisol_parameters)
         # write on file
         wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
         wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)

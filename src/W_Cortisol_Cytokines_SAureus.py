@@ -23,13 +23,13 @@ import csv
 #  * @param flag - 
 #  * @param params - 
 #  ******************************************************************************/
-def f(t, y, flag, params, parameters):
+def f(t, y, flag, params, brady_parameters, cortisol_parameters):
      
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
-     n_610 = 34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10
-     n_66 = 560             # pg/mL    # Half-maximum value associated with the auto-negative feedback of IL-6
-     n_6TNF = 185           # pg/mL    # Half-maximum value associated with upregulation of IL-6 by TNF-a
+     n_610 = brady_parameters[0] #34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10
+     n_66 = brady_parameters[1] #560             # pg/mL    # Half-maximum value associated with the auto-negative feedback of IL-6
+     n_6TNF = brady_parameters[2] #185           # pg/mL    # Half-maximum value associated with upregulation of IL-6 by TNF-a
      n_TNF6 = 560           # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-6
      n_810 = 17.4           # pg/mL    # Half-maximum value associated with downregulation of IL-8 by IL-10
      n_8TNF = 185           # pg/mL    # Half-maximum value associated with upregulation of IL-8 by TNF-a
@@ -37,9 +37,9 @@ def f(t, y, flag, params, parameters):
      n_TNF10 = 17.4         # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-10
      n_MTNF = 0.1           # ?        #  
      h_106 = 3.68           # -        # Hill function exponent associated with upregulation of IL-10 by IL-6
-     h_610 = 4              # -        # Hill function exponent associated with downregulation of IL-6 by IL-10
-     h_66 = 1               # -        # Hill function exponent associated with auto-negative feedback of IL-6
-     h_6TNF = 2             # -        # Hill function exponent associated with upregulation of IL-6 by TNF-a
+     h_610 = brady_parameters[3] #4              # -        # Hill function exponent associated with downregulation of IL-6 by IL-10
+     h_66 = brady_parameters[4] #1               # -        # Hill function exponent associated with auto-negative feedback of IL-6
+     h_6TNF = brady_parameters[5] #2             # -        # Hill function exponent associated with upregulation of IL-6 by TNF-a
      h_TNF6 = 2             # -        # Hill function exponent associated with downregulation of TNF-a by IL-6
      h_810 = 1.5            # -        # Hill function exponent associated with downregulation of IL-8 by IL-10
      h_8TNF = 3             # -        # Hill function exponent associated with upregulation of IL-8 by TNF-a
@@ -47,9 +47,9 @@ def f(t, y, flag, params, parameters):
      h_TNF10 = 3            # -        # Hill function exponent associated with downregulation of TNF-a by IL-10
      h_MTNF = 3.16          # -        # 
      k_106 = 0.0191         # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by IL-6
-     k_6 = 4.64             # day-1                                                 # Activation rate (per hour) of IL-6
-     k_6m = 0.01            # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by the activated macrophages
-     k_6TNF = 0.81          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by TNF-a
+     k_6 = brady_parameters[6] #4.64             # day-1                                                 # Activation rate (per hour) of IL-6
+     k_6m = brady_parameters[7] #0.01            # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by the activated macrophages
+     k_6TNF = brady_parameters[8] #0.81          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by TNF-a
      k_8 = 0.464            # day-1                                                 # Activation rate (per hour) of IL-8
      k_8m = 0.056           # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by the activated macrophages
      k_8TNF = 0.56          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by TNF-a
@@ -64,12 +64,12 @@ def f(t, y, flag, params, parameters):
      q_TNF = 0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
-     ktc  = parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
-     kmct = 8.69            # ng/mL                                                 # 
-     kmtc = parameters[1] #2.78            # pg/mL                                                 # 
+     ktc  = cortisol_parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+     kmtc = cortisol_parameters[1] #2.78            # pg/mL                                                 # 
+     kmct = cortisol_parameters[2] #8.69            # ng/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
-     klt = 3.35             # h^-1
-     klt6 = 1.35             # h^-1
+     klt  = 3.35             # h^-1
+     klt6 = cortisol_parameters[3] #1.35             # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
@@ -137,7 +137,7 @@ def f(t, y, flag, params, parameters):
 #  * @param params - 
 #  * @param ic - 
 #  ******************************************************************************/
-def W_Cortisol_Cytokines_SAureus(flag, params, ic, parameters):
+def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_parameters):
      '''
      # Initial Conditions by experimental data
      A = 2                  # Cell/mm3 # S. aureus Bacteria               
@@ -167,7 +167,7 @@ def W_Cortisol_Cytokines_SAureus(flag, params, ic, parameters):
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0,sim_time,deltaT)
 
-     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, parameters), t_eval=t)
+     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, brady_parameters, cortisol_parameters), t_eval=t)
      
      out_A = sol.y[0]
      out_MA = sol.y[1]
