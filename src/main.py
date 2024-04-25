@@ -223,7 +223,10 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     else:
         folder = f'Output/male_{cortisol_exp}_week'
         out_filename = 'average_cortisol_male.csv'
-    f = open (out_filename, 'w+')
+
+    if not os.path.exists(folder): 
+        os.mkdir(folder)
+    f = open (folder+out_filename, 'w')
     
     '''     
     ### load experimental data from file
@@ -422,11 +425,13 @@ if __name__ == "__main__":
     #cortisolDecadesOneDay()
     # todo : pegar o valor da primeira decada no arquivo e testar 7 dias uma decada
     # quando funcionar criar o loop e chamar uma vez para cada decada 
-    #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.24)
+    #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
 
-    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
+    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.55)
     end = time.time()
     print(f"Time: {int(end - start)}s" )
+
+    #cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
     
     print('Simulation done. Bye!')
     ### save cortisol graph

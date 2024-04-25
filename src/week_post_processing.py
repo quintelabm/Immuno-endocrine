@@ -9,7 +9,35 @@ def week_post_processing():
     decades = ['30-40', '40-50', '50-60', '60-70', '70-80', '80-90']
     headers = ['index', 'avg','max','min','std']
     x = [30, 35, 45, 55, 65, 75, 85]
+    cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
 
+     #IL6
+    fig, (ax2) = plt.subplots(1,1)  
+    for i in range(0,6):
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,7,7000)
+        out_IL6 = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_IL6,'.',label=label)
+       
+        
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('IL-6 concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/IL6.png', bbox_inches='tight')
+
+    print('Post-processing done. Bye!')
+
+
+''' 
     # Cortisol
     fig, (ax1) = plt.subplots(1,1)  
     for i in range(1,6):
@@ -53,7 +81,9 @@ def week_post_processing():
     fig.set_figheight(6) 
     fig.tight_layout()
     plt.savefig('Output/tnf/tnf.png', bbox_inches='tight')
-
+''' 
+   
+''' 
     # S.aureus
     fig, (ax3) = plt.subplots(1,1)  
     for i in range(1,6):
@@ -102,9 +132,9 @@ def week_post_processing():
     fig.set_figheight(6) 
     fig.tight_layout()
     plt.savefig('Output/citocinas/citocina.png', bbox_inches='tight')
-
+''' 
    
-    print('Post-processing done. Bye!')
+    
 
 
 
@@ -158,11 +188,11 @@ def post_processing(days):
     fig, (ax2) = plt.subplots(1,1)  
     # todo: repeticao para pegar de cada pasta (valores de cortisol j)
     #cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
-    cortisol_exp = [2.32, 2.24]
-    for j in range(0,2):
+    cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
+    for j in range(0,6):
         # todo: parametrizar para numero de dias simulado
         for i in range(1,days):
-            fname = f'Output/female_{cortisol_exp[j]}/{i}_TNF.csv'
+            fname = f'Output/female_{cortisol_exp[j]}_week/{i}_TNF.csv'
             valor = pd.read_csv(fname, header=None)
             y = valor.T
             d = decades[j]
@@ -183,5 +213,5 @@ def post_processing(days):
 
 
 if __name__ == "__main__":
-    #week_post_processing()
-    post_processing(2)
+    week_post_processing()
+    #post_processing(2)

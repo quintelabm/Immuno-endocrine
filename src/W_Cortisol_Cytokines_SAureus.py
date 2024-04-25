@@ -215,6 +215,23 @@ def plots_w_c_sa(t, folder, outputs, day):
      filename = f'{folder}/{day}_Cytokines.png'
      plt.savefig(filename)
 
+
+     ### Plot IL-6 separated
+     #ax3.plot(t, out_IL6, 'b', linewidth=3,  label="IL-6")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-6
+     ax3.set_ylabel('IL-6 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL6,'g', linewidth=3, label="IL-6")
+     #ax3.set_title("IL-6", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-6.png'
+     plt.savefig(filename)
+
      #Macrophage 
      fig, (ax2) = plt.subplots(1,1)
      ax2.plot(t, out_MR, 'b--',  linewidth=3, label="Resting")
