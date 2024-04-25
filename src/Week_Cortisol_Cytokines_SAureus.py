@@ -233,6 +233,38 @@ def plots_w_c_sa(t, folder,outputs, day):
      filename = f'{folder}/{day}_IL-6.png'
      plt.savefig(filename)
 
+     ### Plot IL-8 separated
+     #ax3.plot(t, out_IL6, 'b', linewidth=3,  label="IL-8")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-8
+     ax3.set_ylabel('IL-8 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL8,'g', linewidth=3, label="IL-8")
+     #ax3.set_title("IL-8", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-8.png'
+     plt.savefig(filename)
+
+     ### Plot IL-10 separated
+     #ax3.plot(t, out_IL10, 'b', linewidth=3,  label="IL-10")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-10
+     ax3.set_ylabel('IL-10 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL10,'g', linewidth=3, label="IL-10")
+     #ax3.set_title("IL-10", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-10.png'
+     plt.savefig(filename)
+
 
      #Macrophage 
      fig, (ax2) = plt.subplots(1,1)
@@ -291,7 +323,6 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax4.legend( ncol = 4, loc='lower left', fontsize = 18)
      ax4.set_xlabel('Time (days)', fontsize = 18)
      ax4.tick_params(labelsize=18)
-
      fig.set_figwidth(8) 
      fig.set_figheight(6) 
      fig.tight_layout()
