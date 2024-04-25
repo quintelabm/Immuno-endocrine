@@ -9,12 +9,14 @@ def week_post_processing():
     decades = ['30-40', '40-50', '50-60', '60-70', '70-80', '80-90']
     headers = ['index', 'avg','max','min','std']
     x = [30, 35, 45, 55, 65, 75, 85]
-    cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
+    cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]     #for F simulations
+    #cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]    #for M simulations
 
      #IL6
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'   #for F simulations
+        #fname = f'Output/male_{cortisol_exp[i]}_week/7_il6.csv'    #for M simulations
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -32,7 +34,8 @@ def week_post_processing():
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    plt.savefig('Output/IL6.png', bbox_inches='tight')
+    plt.savefig('Output/IL6_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/IL6_male.png', bbox_inches='tight')    #for M simulations
 
     print('Post-processing done. Bye!')
 
