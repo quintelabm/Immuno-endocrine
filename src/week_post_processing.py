@@ -12,7 +12,7 @@ def week_post_processing():
     cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]     #for F simulations
     #cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]    #for M simulations
 
-     #IL6
+    #IL6
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
         fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'   #for F simulations
@@ -34,8 +34,116 @@ def week_post_processing():
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    plt.savefig('Output/IL6_female.png', bbox_inches='tight')   #for F simulations
-    #plt.savefig('Output/IL6_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig('Output/week_post_processing/IL6_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/week_post_processing/IL6_male.png', bbox_inches='tight')    #for M simulations
+
+
+
+    #IL8
+    fig, (ax2) = plt.subplots(1,1)  
+    for i in range(0,6):
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_il8.csv'   #for F simulations
+        #fname = f'Output/male_{cortisol_exp[i]}_week/7_il8.csv'    #for M simulations
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,7,7000)
+        out_IL8 = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_IL8,'.',label=label)
+       
+        
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('IL-8 concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/week_post_processing/IL8_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/week_post_processing/IL8_male.png', bbox_inches='tight')    #for M simulations
+
+
+
+    #IL10
+    fig, (ax2) = plt.subplots(1,1)  
+    for i in range(0,6):
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_il10.csv'   #for F simulations
+        #fname = f'Output/male_{cortisol_exp[i]}_week/7_il10.csv'    #for M simulations
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,7,7000)
+        out_IL10 = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_IL10,'.',label=label)
+       
+        
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('IL-10 concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/week_post_processing/IL10_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/week_post_processing/IL10_male.png', bbox_inches='tight')    #for M simulations
+
+
+
+    #TNF
+    fig, (ax2) = plt.subplots(1,1)  
+    for i in range(0,6):
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_TNF.csv'   #for F simulations
+        #fname = f'Output/male_{cortisol_exp[i]}_week/7_TNF.csv'    #for M simulations
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,7,7000)
+        out_TNF = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_TNF,'.',label=label)
+       
+        
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('TNF concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/week_post_processing/TNF_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/week_post_processing/TNF_male.png', bbox_inches='tight')    #for M simulations
+
+
+
+    #Cortisol
+    fig, (ax2) = plt.subplots(1,1)  
+    for i in range(0,6):
+        fname = f'Output/female_{cortisol_exp[i]}_week/7_cortisol.csv'   #for F simulations
+        #fname = f'Output/male_{cortisol_exp[i]}_week/7_cortisol.csv'    #for M simulations
+        valor = pd.read_csv(fname, header=None)
+        y = valor.T
+        d = decades[i]
+        label = f'Década {d}'
+        x = np.linspace(0,7,7000)
+        out_cortisol = y[0]
+        #out_TNF = 100 * (out_TNF - min(out_TNF)) / (max(out_TNF) - min(out_TNF))
+        ax2.plot(x,out_cortisol,'.',label=label)
+       
+        
+    ax2.legend(bbox_to_anchor = (0.5, -0.15), loc='upper center', fontsize = 18, fancybox=True, shadow=True, ncol=5)    
+    ax2.set_ylabel('Cortisol concentrations \n (relative values)', fontsize = 18)
+    ax2.set_xlabel('Time (days)', fontsize = 18)
+    #ax1.figure(figsize=(10, 10))
+    fig.set_figwidth(15) 
+    fig.set_figheight(6) 
+    fig.tight_layout()
+    plt.savefig('Output/week_post_processing/Cortisol_female.png', bbox_inches='tight')   #for F simulations
+    #plt.savefig('Output/week_post_processing/Cortisol_male.png', bbox_inches='tight')    #for M simulations
 
     print('Post-processing done. Bye!')
 

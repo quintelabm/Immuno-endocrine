@@ -427,7 +427,7 @@ if __name__ == "__main__":
     # quando funcionar criar o loop e chamar uma vez para cada decada 
     #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
 
-    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
+    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
     end = time.time()
     print(f"Time: {int(end - start)}s" )
 
