@@ -13,7 +13,7 @@ parametersDictionary = {
   'kmct': 8.69,
   'kcd': 1.55,
   'klt': 3.35,
-  'klt6': 1.35, #da erro pra rodar a SA
+  'klt6': 1.20,
   'Cmax': 3,
 
   'n_610': 34.8,
@@ -57,14 +57,14 @@ def citokynes(cortisol_parameters, brady_parameters, quintela_parameters):
 
   #nenhum parametro do out_A funcionou na SA
 
-  size = np.size(out_MA)
-  return out_MA[math.ceil(size/2)]
+  size = np.size(out_IL6)
+  return out_IL6[math.ceil(size/2)]
 
 
 if __name__ == "__main__":
     start = time.time()
 
-    names = ['n_610', 'n_66', 'n_6TNF', 'n_MTNF', 'h_610', 'h_66', 'h_6TNF', 'h_MTNF', 'k_6', 'k_6m', 'k_6TNF', 'ktc', 'kmtc', 'kmct']
+    names = ['n_610', 'n_66', 'n_6TNF', 'n_MTNF', 'h_610', 'h_66', 'h_6TNF', 'h_MTNF', 'k_6', 'k_6m', 'k_6TNF', 'ktc', 'kmtc', 'kmct', 'klt6']
     problem = {
         'num_vars': np.size(names),
         'names': names,
@@ -75,9 +75,9 @@ if __name__ == "__main__":
     model_values = np.zeros(param_values.shape[0])
 
     for i, X in enumerate(param_values):
-        [n_610, n_66, n_6TNF, n_MTNF, h_610, h_66, h_6TNF, h_MTNF, k_6, k_6m, k_6TNF, ktc, kmtc, kmct] = X
+        [n_610, n_66, n_6TNF, n_MTNF, h_610, h_66, h_6TNF, h_MTNF, k_6, k_6m, k_6TNF, ktc, kmtc, kmct, klt6] = X
 
-        cortisol_parameters = [ktc, kmtc, kmct]
+        cortisol_parameters = [ktc, kmtc, kmct, klt6]
         brady_parameters = [n_610, n_66, n_6TNF, n_MTNF, h_610, h_66, h_6TNF, h_MTNF, k_6, k_6m, k_6TNF]
         quintela_parameters = []
 
@@ -95,9 +95,54 @@ if __name__ == "__main__":
     # Then the second order sensitivities will not be returned
     # total_Si, first_Si = Si.to_df()
   
-    Si.plot()
-    filename = 'sobol_analysis_MA.png'
-    plt.savefig(filename)
+
+    # Get model outputs
+    y = first_Si
+
+    # Set up figure
+    fig = plt.figure(figsize=(10, 6), constrained_layout=True)
+    gs = fig.add_gridspec(2, 2)
+
+    ax0 = fig.add_subplot(gs[:, 0])
+    ax1 = fig.add_subplot(gs[0, 1])
+    ax2 = fig.add_subplot(gs[1, 1])
+
+
+    # Populate figure subplots
+    for i, ax in enumerate([ax1, ax2]):
+        ax.plot(x, S1s[:, i],
+                label=r'S1$_\mathregular{{{}}}$'.format(problem["names"][i]),
+                color='black')
+        ax.set_xlabel("x")
+        ax.set_ylabel("First-order Sobol index")
+
+        ax.set_ylim(0, 1.04)
+
+        ax.yaxis.set_label_position("right")
+        ax.yaxis.tick_right()
+
+        ax.legend(loc='upper right')
+
+    ax0.plot(x, np.mean(y, axis=0), label="Mean", color='black')
+
+    # in percent
+    prediction_interval = 95
+
+    ax0.fill_between(x,
+                    np.percentile(y, 50 - prediction_interval/2., axis=0),
+                    np.percentile(y, 50 + prediction_interval/2., axis=0),
+                    alpha=0.5, color='black',
+                    label=f"{prediction_interval} % prediction interval")
+
+    ax0.set_xlabel("x")
+    ax0.set_ylabel("y")
+
+    plt.show()
+
+
+    # Si.plot()
+    # filename = 'sobol_analysis_IL6.png'
+    # plt.savefig(filename)
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )

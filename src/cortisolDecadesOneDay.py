@@ -76,13 +76,13 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
             ### plot results from the first model 
             ### todo: parameterize with number of saved files we want
             ### as we expect to run for several years
-            wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
-            wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
-            wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
-            wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
-            wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
-            wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-            wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+            # wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
+            # wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
+            # wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
+            # wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
+            # wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
+            # wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
+            # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
             
         ########################################################        
         #### convert cortisol values per day to per minutes ####
@@ -165,13 +165,13 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
         # print(ic)
         [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(i,gluc_intake_wcsa, ic, brady_parameters, cortisol_parameters, quintela_parameters)
         # write on file
-        wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
-        wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
-        wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
-        wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
-        wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
-        wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-        wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+        # wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
+        # wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
+        # wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
+        # wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
+        # wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
+        # wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
+        # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
         
         # write last simulation to file
         if (i==(days-1)):

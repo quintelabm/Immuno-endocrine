@@ -69,7 +69,7 @@ def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parame
      kmct = cortisol_parameters[2] #8.69            # ng/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt  = 3.35             # h^-1
-     klt6 = 1.35             # h^-1
+     klt6 = cortisol_parameters[3] #1.35             # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
@@ -193,89 +193,89 @@ def plots_w_c_sa(t, folder, outputs, day):
      out_IL8 = 100 * (out_IL8 - min(out_IL8)) / (max(out_IL8) - min(out_IL8))
      out_IL10 = 100 * (out_IL10 - min(out_IL10)) / (max(out_IL10) - min(out_IL10))
      
-     # Cytokines
-     fig, (ax1) = plt.subplots(1,1)
-     ax1.plot(t, out_TNF,'purple',  linewidth=3, label="TNF α")
-     ax1.plot(t, out_IL6, 'b', linewidth=3,  label="IL-6")
-     ax1.plot(t, out_IL8, 'r--',  linewidth=3, label="IL-8")
-     ax1.plot(t, out_IL10, 'orange',  linewidth=3, label="IL-10")
+     # # Cytokines
+     # fig, (ax1) = plt.subplots(1,1)
+     # ax1.plot(t, out_TNF,'purple',  linewidth=3, label="TNF α")
+     # ax1.plot(t, out_IL6, 'b', linewidth=3,  label="IL-6")
+     # ax1.plot(t, out_IL8, 'r--',  linewidth=3, label="IL-8")
+     # ax1.plot(t, out_IL10, 'orange',  linewidth=3, label="IL-10")
 
 
-     #ax1.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
-     ax1.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
-     ax1.set_xlabel('Time (days)', fontsize = 18)
-     ax1.set_ylabel('Cytokine concentrations \n (relative values)', fontsize = 18)
-     ax1.tick_params(labelsize=18)
+     # #ax1.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
+     # ax1.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
+     # ax1.set_xlabel('Time (days)', fontsize = 18)
+     # ax1.set_ylabel('Cytokine concentrations \n (relative values)', fontsize = 18)
+     # ax1.tick_params(labelsize=18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
-     fig.tight_layout()
-     filename = f'{folder}/{day}_Cytokines.png'
-     plt.savefig(filename)
+     # fig.set_figwidth(10) 
+     # fig.set_figheight(6) 
+     # fig.tight_layout()
+     # filename = f'{folder}/{day}_Cytokines.png'
+     # plt.savefig(filename)
 
-     #Macrophage 
-     fig, (ax2) = plt.subplots(1,1)
-     ax2.plot(t, out_MR, 'b--',  linewidth=3, label="Resting")
-     ax2.plot(t, out_MA, 'black',  linewidth=3, label="Activated")
-     #ax2.plot(t, out_A,'r',  linewidth=3, label="A")
-     ax2.tick_params(labelsize=18)
+     # #Macrophage 
+     # fig, (ax2) = plt.subplots(1,1)
+     # ax2.plot(t, out_MR, 'b--',  linewidth=3, label="Resting")
+     # ax2.plot(t, out_MA, 'black',  linewidth=3, label="Activated")
+     # #ax2.plot(t, out_A,'r',  linewidth=3, label="A")
+     # ax2.tick_params(labelsize=18)
      
-     fontsize = 18
+     # fontsize = 18
 
-     #ax2.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
-     ax2.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
-     ax2.set_xlabel('Time (days)', fontsize = 18)
-     ax2.set_ylabel('Macrophage Concentration \n (cells/mm³ )', fontsize = 18)
+     # #ax2.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
+     # ax2.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
+     # ax2.set_xlabel('Time (days)', fontsize = 18)
+     # ax2.set_ylabel('Macrophage Concentration \n (cells/mm³ )', fontsize = 18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
-     fig.tight_layout()
-     filename = f'{folder}/{day}_Macrophage.png'
-     plt.savefig(filename)
+     # fig.set_figwidth(10) 
+     # fig.set_figheight(6) 
+     # fig.tight_layout()
+     # filename = f'{folder}/{day}_Macrophage.png'
+     # plt.savefig(filename)
 
-     # S. aureus
-     fig, (ax2) = plt.subplots(1,1)
-     ax2.plot(t, out_A,'r',  linewidth=3, label="With Immune\n Response")
-     #ax2.plot(t, out_A_wo,'b',  linewidth=3, label="Without Immune\n Response")
-     ax2.tick_params(labelsize=18)
+     # # S. aureus
+     # fig, (ax2) = plt.subplots(1,1)
+     # ax2.plot(t, out_A,'r',  linewidth=3, label="With Immune\n Response")
+     # #ax2.plot(t, out_A_wo,'b',  linewidth=3, label="Without Immune\n Response")
+     # ax2.tick_params(labelsize=18)
 
-     #ax2.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
-     ax2.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
-     ax2.set_xlabel('Time (days)', fontsize = 18)
-     ax2.set_ylabel('S. aureus \n (cells/mm³ )', fontsize = 18)
+     # #ax2.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
+     # ax2.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
+     # ax2.set_xlabel('Time (days)', fontsize = 18)
+     # ax2.set_ylabel('S. aureus \n (cells/mm³ )', fontsize = 18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
-     fig.tight_layout()
-     filename = f'{folder}/{day}_S_aureus.png'
-     plt.savefig(filename)
+     # fig.set_figwidth(10) 
+     # fig.set_figheight(6) 
+     # fig.tight_layout()
+     # filename = f'{folder}/{day}_S_aureus.png'
+     # plt.savefig(filename)
 
-     fig, (ax3) = plt.subplots(1,1)
-     # Cortisol
-     ax3.set_ylabel('Cortisol (ng/day)', fontsize = 18)
-     ax3.plot(t, out_COR,'g', linewidth=3, label="Cortisol with glucose influence")
-     #ax3.set_title("Cortisol", fontsize = 20)
-     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
-     ax3.set_xlabel('Time (days)', fontsize = 18)
-     ax3.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
-     fig.tight_layout()
-     filename = f'{folder}/{day}_Cortisol.png'
-     plt.savefig(filename)
+     # fig, (ax3) = plt.subplots(1,1)
+     # # Cortisol
+     # ax3.set_ylabel('Cortisol (ng/day)', fontsize = 18)
+     # ax3.plot(t, out_COR,'g', linewidth=3, label="Cortisol with glucose influence")
+     # #ax3.set_title("Cortisol", fontsize = 20)
+     # ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     # ax3.set_xlabel('Time (days)', fontsize = 18)
+     # ax3.tick_params(labelsize=18)
+     # fig.set_figwidth(8) 
+     # fig.set_figheight(6) 
+     # fig.tight_layout()
+     # filename = f'{folder}/{day}_Cortisol.png'
+     # plt.savefig(filename)
 
-     # TNF
-     fig, (ax4) = plt.subplots(1,1)
-     ax4.plot(t, out_TNF,'purple', linewidth=3, label="TNF-α with cortisol influence")
-     ax4.legend( ncol = 4, loc='lower left', fontsize = 18)
-     ax4.set_xlabel('Time (days)', fontsize = 18)
-     ax4.tick_params(labelsize=18)
+     # # TNF
+     # fig, (ax4) = plt.subplots(1,1)
+     # ax4.plot(t, out_TNF,'purple', linewidth=3, label="TNF-α with cortisol influence")
+     # ax4.legend( ncol = 4, loc='lower left', fontsize = 18)
+     # ax4.set_xlabel('Time (days)', fontsize = 18)
+     # ax4.tick_params(labelsize=18)
 
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
-     fig.tight_layout()
-     filename = f'{folder}/{day}_TNF.png'
-     plt.savefig(filename)
+     # fig.set_figwidth(8) 
+     # fig.set_figheight(6) 
+     # fig.tight_layout()
+     # filename = f'{folder}/{day}_TNF.png'
+     # plt.savefig(filename)
 
 # /*******************************************************************************
 #  * @param folder - folder directory to be saved
