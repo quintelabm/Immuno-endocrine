@@ -83,23 +83,52 @@ if __name__ == "__main__":
 
         model_values[i] = citokynes(cortisol_parameters, brady_parameters, quintela_parameters)
 
-    Si = sobol.analyze(problem, model_values)
 
-    print("S1: ", Si['S1'])
-    print("S2: ", Si['S2'])
-    print("ST: ", Si['ST'])
+    # print("S1: ", Si['S1'])
+    # print("S2: ", Si['S2'])
+    # print("ST: ", Si['ST'])
 
-    #The output can then be converted to a Pandas DataFrame for further analysis.
-    total_Si, first_Si, second_Si = Si.to_df()
-    # Note that if the sample was created with `calc_second_order=False`
-    # Then the second order sensitivities will not be returned
-    # total_Si, first_Si = Si.to_df()
+    # #The output can then be converted to a Pandas DataFrame for further analysis.
+    # total_Si, first_Si, second_Si = Si.to_df()
+    # # Note that if the sample was created with `calc_second_order=False`
+    # # Then the second order sensitivities will not be returned
+    # # total_Si, first_Si = Si.to_df()
   
 
-    # Get model outputs
-    y = first_Si
+    # #The output can then be converted to a Pandas DataFrame for further analysis.
+    # total_Si, first_Si, second_Si = Si.to_df()
+    # # Note that if the sample was created with `calc_second_order=False`
+    # # Then the second order sensitivities will not be returned
+    # # total_Si, first_Si = Si.to_df()
+
+    # Si.heatmap()
+    # plt.show()
+  
+    # barplot(total_Si)
+    # filename = 'sobol_analysis_IL6_total.png'
+    # plt.savefig(filename)
+
+    # barplot(first_Si)
+    # filename = 'sobol_analysis_IL6_first.png'
+    # plt.savefig(filename)
+
+    # barplot(second_Si)
+    # filename = 'sobol_analysis_IL6_second.png'
+    # plt.savefig(filename)
+
+
+    # evaluate
+    x = np.linspace(-1, 1, 100)
+    y = np.array([parabola(*params) for params in param_values])
+
+    print(np.size(y), np.size(x))
+
+    # analyse
+    sobol_indices = [ sobol.analyze(problem, model_values) for model_values in y.T]
 
     # Set up figure
+    S1s = np.array([s['S1'] for s in sobol_indices])
+    
     fig = plt.figure(figsize=(10, 6), constrained_layout=True)
     gs = fig.add_gridspec(2, 2)
 
