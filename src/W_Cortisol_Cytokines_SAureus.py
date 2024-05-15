@@ -24,7 +24,6 @@ import csv
 #  * @param params - 
 #  ******************************************************************************/
 def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parameters):
-     
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
      n_610 = brady_parameters[0] #34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10

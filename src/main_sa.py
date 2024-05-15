@@ -3,6 +3,7 @@ import cortisolDecadesOneDay as cdd
 import time
 from SALib.sample import saltelli
 from SALib.analyze import sobol
+from SALib.plotting.bar import plot as barplot
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -84,15 +85,16 @@ if __name__ == "__main__":
         model_values[i] = citokynes(cortisol_parameters, brady_parameters, quintela_parameters)
 
 
+    Si = sobol.analyze(problem, model_values)
     # print("S1: ", Si['S1'])
     # print("S2: ", Si['S2'])
     # print("ST: ", Si['ST'])
 
-    # #The output can then be converted to a Pandas DataFrame for further analysis.
-    # total_Si, first_Si, second_Si = Si.to_df()
-    # # Note that if the sample was created with `calc_second_order=False`
-    # # Then the second order sensitivities will not be returned
-    # # total_Si, first_Si = Si.to_df()
+    #The output can then be converted to a Pandas DataFrame for further analysis.
+    total_Si, first_Si, second_Si = Si.to_df()
+    # Note that if the sample was created with `calc_second_order=False`
+    # Then the second order sensitivities will not be returned
+    # total_Si, first_Si = Si.to_df()
   
 
     # #The output can then be converted to a Pandas DataFrame for further analysis.
@@ -104,62 +106,39 @@ if __name__ == "__main__":
     # Si.heatmap()
     # plt.show()
   
-    # barplot(total_Si)
-    # filename = 'sobol_analysis_IL6_total.png'
-    # plt.savefig(filename)
+    barplot(total_Si)
+    filename = 'sobol_analysis_IL6_total.png'
+    plt.savefig(filename)
 
-    # barplot(first_Si)
-    # filename = 'sobol_analysis_IL6_first.png'
-    # plt.savefig(filename)
+    barplot(first_Si)
+    filename = 'sobol_analysis_IL6_first.png'
+    plt.savefig(filename)
 
-    # barplot(second_Si)
-    # filename = 'sobol_analysis_IL6_second.png'
-    # plt.savefig(filename)
-
+    barplot(second_Si)
+    filename = 'sobol_analysis_IL6_second.png'
+    plt.savefig(filename)
 
     # evaluate
     x = np.linspace(-1, 1, 100)
-    y = np.array([parabola(*params) for params in param_values])
-
-    print(np.size(y), np.size(x))
-
-    # analyse
-    sobol_indices = [ sobol.analyze(problem, model_values) for model_values in y.T]
-
     # Set up figure
-    S1s = np.array([s['S1'] for s in sobol_indices])
+    S1s = np.array([first_Si])
     
-    fig = plt.figure(figsize=(10, 6), constrained_layout=True)
-    gs = fig.add_gridspec(2, 2)
+    fig, (ax0) = plt.subplots(1,1)
 
-    ax0 = fig.add_subplot(gs[:, 0])
-    ax1 = fig.add_subplot(gs[0, 1])
-    ax2 = fig.add_subplot(gs[1, 1])
+    mean = np.zeros(np.size(model_values))
+    for i, values in enumerate(model_values):
+      mean[i] = np.mean(values, axis=0)
 
-
-    # Populate figure subplots
-    for i, ax in enumerate([ax1, ax2]):
-        ax.plot(x, S1s[:, i],
-                label=r'S1$_\mathregular{{{}}}$'.format(problem["names"][i]),
-                color='black')
-        ax.set_xlabel("x")
-        ax.set_ylabel("First-order Sobol index")
-
-        ax.set_ylim(0, 1.04)
-
-        ax.yaxis.set_label_position("right")
-        ax.yaxis.tick_right()
-
-        ax.legend(loc='upper right')
-
-    ax0.plot(x, np.mean(y, axis=0), label="Mean", color='black')
+    print(S1s, np.size(S1s))
+    print(mean, np.size(mean))
+    ax0.plot(x, mean, label="Mean", color='black')
 
     # in percent
     prediction_interval = 95
 
     ax0.fill_between(x,
-                    np.percentile(y, 50 - prediction_interval/2., axis=0),
-                    np.percentile(y, 50 + prediction_interval/2., axis=0),
+                    np.percentile(model_values, 50 - prediction_interval/2., axis=0),
+                    np.percentile(model_values, 50 + prediction_interval/2., axis=0),
                     alpha=0.5, color='black',
                     label=f"{prediction_interval} % prediction interval")
 
@@ -167,11 +146,6 @@ if __name__ == "__main__":
     ax0.set_ylabel("y")
 
     plt.show()
-
-
-    # Si.plot()
-    # filename = 'sobol_analysis_IL6.png'
-    # plt.savefig(filename)
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )
