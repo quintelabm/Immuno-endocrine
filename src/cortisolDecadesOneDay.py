@@ -174,27 +174,27 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
         # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
         
         # write last simulation to file
-        if (i==(days-1)):
+        # if (i==(days-1)):
             ########################################################        
             #### convert cortisol values per day to per minutes ####
             ########################################################
             # Obtain output from cell-cytokine-cortisol model
-            cortisol_wcsa = pd.DataFrame(outputs_wcsa[7], columns = ['values'])
-            # Extract 1000 cortisol values (each 1440 steps)
-            #cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 1440, axis=0))
-            cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 720, axis=0))
-            cortisol_gi.columns = ['values']
-            # Change index to t_gi
-            cortisol_gi.set_index(t_gi, inplace=True)
-            cortisol_gi.reset_index(inplace=True)
+            # cortisol_wcsa = pd.DataFrame(outputs_wcsa[7], columns = ['values'])
+            # # Extract 1000 cortisol values (each 1440 steps)
+            # #cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 1440, axis=0))
+            # cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 720, axis=0))
+            # cortisol_gi.columns = ['values']
+            # # Change index to t_gi
+            # cortisol_gi.set_index(t_gi, inplace=True)
+            # cortisol_gi.reset_index(inplace=True)
             
-            avg_cor = cortisol_gi.iloc[::480000].mean()['values']
-            #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
-            print("tamanho da media do COR: ", np.size(avg_cor))
-            data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            with open (folder+out_filename, 'a+') as f:
-                writer = csv.writer(f)
-                writer.writerow(data)
+            # avg_cor = cortisol_gi.iloc[::480000].mean()['values']
+            # #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
+            # print("tamanho da media do COR: ", np.size(avg_cor))
+            # data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
+            # with open (folder+out_filename, 'a+') as f:
+            #     writer = csv.writer(f)
+            #     writer.writerow(data)
         
         #### end for (time loop) ####
     return [t_wcsa, outputs_wcsa]

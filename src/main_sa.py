@@ -1,9 +1,7 @@
 
 import cortisolDecadesOneDay as cdd
 import time
-from SALib.sample import saltelli
-from SALib.analyze import sobol
-from SALib.plotting.bar import plot as barplot
+from SALib import ProblemSpec
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -45,9 +43,6 @@ def parametersInterval(parameters):
   return bounds
 
 
-
-
-
 def citokynes(cortisol_parameters, brady_parameters, quintela_parameters):
   simulation = 'F'
 
@@ -66,16 +61,17 @@ if __name__ == "__main__":
     start = time.time()
 
     names = ['n_610', 'n_66', 'n_6TNF', 'n_MTNF', 'h_610', 'h_66', 'h_6TNF', 'h_MTNF', 'k_6', 'k_6m', 'k_6TNF', 'ktc', 'kmtc', 'kmct', 'klt6']
-    problem = {
-        'num_vars': np.size(names),
-        'names': names,
-        'bounds': parametersInterval(names)
-    }
+    sp = ProblemSpec({
+        "names": names,
+        "groups": None,
+        "bounds": parametersInterval(names),
+        "outputs": ["Cortisol_Cytokines"],
+    })
 
-    param_values = saltelli.sample(problem, 1) #originalmente era 1024, coloquei 2 para rodar mais rápido
-    model_values = np.zeros(param_values.shape[0])
+    sp.sample_sobol(1024, calc_second_order=True)
+    model_values = np.zeros(sp.samples.shape[0])
 
-    for i, X in enumerate(param_values):
+    for i, X in enumerate(sp.samples):
         [n_610, n_66, n_6TNF, n_MTNF, h_610, h_66, h_6TNF, h_MTNF, k_6, k_6m, k_6TNF, ktc, kmtc, kmct, klt6] = X
 
         cortisol_parameters = [ktc, kmtc, kmct, klt6]
@@ -85,67 +81,62 @@ if __name__ == "__main__":
         model_values[i] = citokynes(cortisol_parameters, brady_parameters, quintela_parameters)
 
 
-    Si = sobol.analyze(problem, model_values)
+    # Provide the results to the interface
+    sp.set_results(model_values)
+    sp.analyze_sobol()
+
+    S1 = sp.analysis['S1']
     # print("S1: ", Si['S1'])
+    S2 = sp.analysis['S2']
     # print("S2: ", Si['S2'])
-    # print("ST: ", Si['ST'])
 
     #The output can then be converted to a Pandas DataFrame for further analysis.
-    total_Si, first_Si, second_Si = Si.to_df()
+    # total_Si, first_Si, second_Si = Si.to_df()
     # Note that if the sample was created with `calc_second_order=False`
     # Then the second order sensitivities will not be returned
     # total_Si, first_Si = Si.to_df()
-  
 
-    # #The output can then be converted to a Pandas DataFrame for further analysis.
-    # total_Si, first_Si, second_Si = Si.to_df()
-    # # Note that if the sample was created with `calc_second_order=False`
-    # # Then the second order sensitivities will not be returned
-    # # total_Si, first_Si = Si.to_df()
+    spPlot = sp.plot()
+    spPlot[0].set_yscale('log')
+    fig = plt.gcf()  # get current figure
+    fig.set_size_inches(10, 4)
+    plt.tight_layout()
+    plt.savefig('./Output/Graficos/sa_IL_6.png')
 
-    # Si.heatmap()
-    # plt.show()
-  
-    barplot(total_Si)
-    filename = 'sobol_analysis_IL6_total.png'
-    plt.savefig(filename)
+    heatmapSALib = sp.heatmap(index="ST")
+    plt.savefig('./Output/Graficos/heatmap_IL_6_ST.png')
 
-    barplot(first_Si)
-    filename = 'sobol_analysis_IL6_first.png'
-    plt.savefig(filename)
+    heatmapSALib = sp.heatmap(index="S1")
+    plt.savefig('./Output/Graficos/heatmap_IL_6_S1.png')
 
-    barplot(second_Si)
-    filename = 'sobol_analysis_IL6_second.png'
-    plt.savefig(filename)
+    heatmapSALib = sp.heatmap(index="S2")
+    plt.savefig('./Output/Graficos/heatmap_IL_6_S2.png')
 
-    # evaluate
-    x = np.linspace(-1, 1, 100)
+
+    # Get model outputs
+    y = sp.results
+    x = np.linspace(0, 2, y.shape[0])
+
     # Set up figure
-    S1s = np.array([first_Si])
-    
-    fig, (ax0) = plt.subplots(1,1)
+    fig = plt.figure(figsize=(10, 6), constrained_layout=True)
+    gs = fig.add_gridspec(2, 2)
+    ax0 = fig.add_subplot(gs[:, 0])
 
-    mean = np.zeros(np.size(model_values))
-    for i, values in enumerate(model_values):
-      mean[i] = np.mean(values, axis=0)
-
-    print(S1s, np.size(S1s))
-    print(mean, np.size(mean))
-    ax0.plot(x, mean, label="Mean", color='black')
+    ax0.plot(x, y, label="IL_6 Mean", color='black')
 
     # in percent
     prediction_interval = 95
 
     ax0.fill_between(x,
-                    np.percentile(model_values, 50 - prediction_interval/2., axis=0),
-                    np.percentile(model_values, 50 + prediction_interval/2., axis=0),
+                    np.percentile(y, 50 - prediction_interval/2., axis=0),
+                    np.percentile(y, 50 + prediction_interval/2., axis=0),
                     alpha=0.5, color='black',
                     label=f"{prediction_interval} % prediction interval")
 
     ax0.set_xlabel("x")
-    ax0.set_ylabel("y")
+    ax0.set_ylabel("IL_6")
 
-    plt.show()
+    plt.savefig('./Output/Graficos/mean_IL_6.png')
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )
