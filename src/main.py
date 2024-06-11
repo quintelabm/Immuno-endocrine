@@ -417,7 +417,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
 
 if __name__ == "__main__":
     start = time.time()
-    simulation = 'M'
+    simulation = 'F'
 
     #todozao: Fazer o teste mantendo o valor do cortisol fixo e testar da glucose fixa
     # tb pra ver a variação das citocinas com os 7 dias por decada
@@ -427,7 +427,21 @@ if __name__ == "__main__":
     # quando funcionar criar o loop e chamar uma vez para cada decada 
     #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
 
-    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=3.13)
+    if(simulation=='F'):
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.24)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.25)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.43)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.55)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)    
+    else:
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.25)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.55)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.62)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.84)
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=3.13)
+
     end = time.time()
     print(f"Time: {int(end - start)}s" )
 
