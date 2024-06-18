@@ -3,20 +3,24 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-def week_post_processing():
+def week_post_processing(simulation):
 
     #--- Generate Cortisol Plot by paper ---
     decades = ['30-40', '40-50', '50-60', '60-70', '70-80', '80-90']
     headers = ['index', 'avg','max','min','std']
     x = [30, 35, 45, 55, 65, 75, 85]
-    #cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]     #for F simulations
-    cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]    #for M simulations
+    if(simulation=='F'):
+        cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
+    else:
+        cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
 
     #IL6
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_il6.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_il6.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_il6.csv'
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -34,16 +38,15 @@ def week_post_processing():
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    #plt.savefig('Output/week_post_processing/IL6_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/IL6_male.png', bbox_inches='tight')    #for M simulations
-
-
+    plt.savefig(f'Output/week_post_processing/IL6_{simulation}.png', bbox_inches='tight') #defines file name based on simulation value
 
     #IL8
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_il8.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_il8.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_il8.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_il8.csv'
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -61,16 +64,17 @@ def week_post_processing():
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    #plt.savefig('Output/week_post_processing/IL8_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/IL8_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig(f'Output/week_post_processing/IL8_{simulation}.png', bbox_inches='tight')
 
 
 
     #IL10
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_il10.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_il10.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_il10.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_il10.csv'
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -89,7 +93,7 @@ def week_post_processing():
     fig.set_figheight(6) 
     fig.tight_layout()
     #plt.savefig('Output/week_post_processing/IL10_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/IL10_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig(f'Output/week_post_processing/IL10_{simulation}.png', bbox_inches='tight')    #for M simulations
 
 
 

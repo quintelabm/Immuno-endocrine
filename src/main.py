@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import csv
 import time
 import os
+import week_post_processing as weekprocessing
 
 
 # /*******************************************************************************
@@ -433,7 +434,8 @@ if __name__ == "__main__":
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.25)
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.43)
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.55)
-        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)    
+        cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.80)
+        #   
     else:
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.25)
@@ -441,13 +443,18 @@ if __name__ == "__main__":
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.62)
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.84)
         cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=3.13)
+        #
 
     end = time.time()
     print(f"Time: {int(end - start)}s" )
+    
 
     #cortisol_exp for F simulation = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
     #cortisol_exp for M simulation = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
     
     print('Simulation done. Bye!')
+
+    weekprocessing.week_post_processing(simulation)
+
     ### save cortisol graph
     ##post_processing(out_filename)
