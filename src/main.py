@@ -434,6 +434,7 @@ if __name__ == "__main__":
         for i in range(0,6):
             cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i])
     #defines the values for cortisol_exp and runs the simulation using each one of these values
+    
     else:
         cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
 
