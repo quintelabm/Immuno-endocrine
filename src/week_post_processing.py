@@ -100,8 +100,10 @@ def week_post_processing(simulation):
     #TNF
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_TNF.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_TNF.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_TNF.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_TNF.csv'
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -119,16 +121,17 @@ def week_post_processing(simulation):
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    #plt.savefig('Output/week_post_processing/TNF_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/TNF_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig(f'Output/week_post_processing/TNF_{simulation}.png', bbox_inches='tight')    #for M simulations
 
 
 
     #Cortisol
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_cortisol.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_cortisol.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_cortisol.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_cortisol.csv'    #for M simulations
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -146,16 +149,17 @@ def week_post_processing(simulation):
     fig.set_figwidth(15) 
     fig.set_figheight(6) 
     fig.tight_layout()
-    #plt.savefig('Output/week_post_processing/Cortisol_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/Cortisol_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig(f'Output/week_post_processing/Cortisol_{simulation}.png', bbox_inches='tight')   #for F simulations
 
 
 
     #Macrophage
     fig, (ax2) = plt.subplots(1,1)  
     for i in range(0,6):
-        #fname = f'Output/female_{cortisol_exp[i]}_week/7_ma.csv'   #for F simulations
-        fname = f'Output/male_{cortisol_exp[i]}_week/7_ma.csv'    #for M simulations
+        if(simulation=='F'):
+            fname = f'Output/female_{cortisol_exp[i]}_week/7_ma.csv'
+        else:
+            fname = f'Output/male_{cortisol_exp[i]}_week/7_ma.csv'
         valor = pd.read_csv(fname, header=None)
         y = valor.T
         d = decades[i]
@@ -174,7 +178,7 @@ def week_post_processing(simulation):
     fig.set_figheight(6) 
     fig.tight_layout()
     #plt.savefig('Output/week_post_processing/MA_female.png', bbox_inches='tight')   #for F simulations
-    plt.savefig('Output/week_post_processing/MA_male.png', bbox_inches='tight')    #for M simulations
+    plt.savefig(f'Output/week_post_processing/MA_{simulation}.png', bbox_inches='tight')    #for M simulations
 
     print('Post-processing done. Bye!')
 
