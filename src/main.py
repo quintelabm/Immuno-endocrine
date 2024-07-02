@@ -210,7 +210,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
 #  * @param cortisol_exp
 #  ******************************************************************************/
 
-def cortisolDecadesOneWeek(simulation, cortisol_exp):
+def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
 
     # Number of days for the simulation 
     days = 7 #2
@@ -376,7 +376,9 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp):
     # print(ic)
     #days=1
 
-    gluc_intake_wcsa['values'] = gluc_intake_wcsa['values']*1.5
+    glucMult = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+
+    gluc_intake_wcsa['values'] = gluc_intake_wcsa['values']*glucMult[decadeIndex]
 
     [t_wcsa, outputs_wcsa] = week_csa.Week_Cortisol_Cytokines_SAureus(days,gluc_intake_wcsa, ic)
 
@@ -431,13 +433,13 @@ if __name__ == "__main__":
     # quando funcionar criar o loop e chamar uma vez para cada decada 
     #cortisolDecadesOneDay(simulation=simulation, cortisol_exp=2.32)
 
-    cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
+    #cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=2.32)
 
     if(simulation=='F'):
         cortisol_exp = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
-        
+
         for i in range(0,6):
-            cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i])
+            cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i], decadeIndex=i)
             
     #defines the values for cortisol_exp and runs the simulation using each one of these values
     
@@ -445,7 +447,7 @@ if __name__ == "__main__":
         cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
 
         for i in range(0,6):
-            cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i])
+            cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i], decadeIndex=i)
     #this does the same as the one before, but to the M value of the simulation
 
     end = time.time()
