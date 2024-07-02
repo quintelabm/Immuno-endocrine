@@ -212,6 +212,8 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
 
 def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
 
+    #added the decadeIndex term so the glucose increases for each decade
+
     # Number of days for the simulation 
     days = 7
     print(f'Simulation started! ({days} days)')
@@ -221,6 +223,7 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
     if(simulation=='F'):
         folder = f'Output/female_{cortisol_exp}_week'
         out_filename = 'average_cortisol_female.csv'
+        #defines the folders to save the files
     else:
         folder = f'Output/male_{cortisol_exp}_week'
         out_filename = 'average_cortisol_male.csv'
@@ -228,7 +231,9 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
     if not os.path.exists(folder): 
         os.mkdir(folder)
     f = open (folder+out_filename, 'w')
-    
+
+    #creates folder if it doesn't exist
+
     '''     
     ### load experimental data from file
     headers = ['decade', 'value']
@@ -376,9 +381,9 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
     # print(ic)
     #days=1
 
-    glucMult = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6]
+    glucMult = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6] #added a multiplier value so glucose increases for each subsequent decade
 
-    gluc_intake_wcsa['values'] = gluc_intake_wcsa['values']*glucMult[decadeIndex]
+    gluc_intake_wcsa['values'] = gluc_intake_wcsa['values']*glucMult[decadeIndex] #multiplies gluc_intake_wcsa values by the glucMult value
 
     [t_wcsa, outputs_wcsa] = week_csa.Week_Cortisol_Cytokines_SAureus(days,gluc_intake_wcsa, ic)
 
