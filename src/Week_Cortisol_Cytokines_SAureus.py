@@ -69,6 +69,7 @@ def f(t, y, flag, params):
      kmtc = 2.78            # pg/mL                                                 # 
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt = 3.35             # h^-1
+     klt6 = 1.0           # h^-1
      Cmax = 3
 
      # Parameters by Quintela et al., (2014)
@@ -115,9 +116,10 @@ def f(t, y, flag, params):
           
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
-     
+     #added cortisol influence term: - klt*COR*(1-COR/(COR+kmct)) to dIL6dt
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
-               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - k_6 * (IL6 - q_IL6)
+               + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
+                - k_6 * (IL6 - q_IL6)
      
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
                + pow(IL10, h_810)))) * MA - k_8 * (IL8 - q_IL8)
@@ -199,10 +201,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      # Cytokines
      fig, (ax1) = plt.subplots(1,1)
      ax1.plot(t, out_TNF,'purple',  linewidth=3, label="TNF α")
-     ax1.plot(t, out_IL6, 'b', linewidth=3,  label="IL-6")
      ax1.plot(t, out_IL8, 'r--',  linewidth=3, label="IL-8")
      ax1.plot(t, out_IL10, 'orange',  linewidth=3, label="IL-10")
-
 
      #ax1.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
      ax1.legend(bbox_to_anchor = (1,.5), loc='center left', fontsize = 18)
@@ -215,6 +215,56 @@ def plots_w_c_sa(t, folder,outputs, day):
      fig.tight_layout()
      filename = f'{folder}/{day}_Cytokines.png'
      plt.savefig(filename)
+
+
+     ### Plot IL-6 separated
+     #ax3.plot(t, out_IL6, 'b', linewidth=3,  label="IL-6")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-6
+     ax3.set_ylabel('IL-6 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL6,'g', linewidth=3, label="IL-6")
+     #ax3.set_title("IL-6", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-6.png'
+     plt.savefig(filename)
+
+     ### Plot IL-8 separated
+     #ax3.plot(t, out_IL6, 'b', linewidth=3,  label="IL-8")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-8
+     ax3.set_ylabel('IL-8 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL8,'g', linewidth=3, label="IL-8")
+     #ax3.set_title("IL-8", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-8.png'
+     plt.savefig(filename)
+
+     ### Plot IL-10 separated
+     #ax3.plot(t, out_IL10, 'b', linewidth=3,  label="IL-10")
+     fig, (ax3) = plt.subplots(1,1)
+     # IL-10
+     ax3.set_ylabel('IL-10 (ng/day)', fontsize = 18)
+     ax3.plot(t, out_IL10,'g', linewidth=3, label="IL-10")
+     #ax3.set_title("IL-10", fontsize = 20)
+     ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
+     ax3.set_xlabel('Time (days)', fontsize = 18)
+     ax3.tick_params(labelsize=18)
+     fig.set_figwidth(8) 
+     fig.set_figheight(6) 
+     fig.tight_layout()
+     filename = f'{folder}/{day}_IL-10.png'
+     plt.savefig(filename)
+
 
      #Macrophage 
      fig, (ax2) = plt.subplots(1,1)
@@ -273,7 +323,6 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax4.legend( ncol = 4, loc='lower left', fontsize = 18)
      ax4.set_xlabel('Time (days)', fontsize = 18)
      ax4.tick_params(labelsize=18)
-
      fig.set_figwidth(8) 
      fig.set_figheight(6) 
      fig.tight_layout()
@@ -289,8 +338,8 @@ def plots_w_c_sa(t, folder,outputs, day):
 def save_output(folder,filename, outputs, day):
      ### create new file 
      nfilename = f'{folder}/{day}_'+filename
-     f = open (nfilename, 'w')
-     with open (nfilename, 'a') as f:
+     f = open (nfilename, 'w+')
+     with open (nfilename, 'a+') as f:
           writer = csv.writer(f)
           writer.writerow(outputs)  
      
