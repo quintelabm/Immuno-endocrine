@@ -213,7 +213,7 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
 def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
 
     # Number of days for the simulation 
-    days = 7 #2
+    days = 7
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
     # create new file 
