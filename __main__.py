@@ -5,7 +5,7 @@ import multiprocessing
 
 start = time.time()
 
-simulation_days = 7
+simulation_days = 365
 simulation_gender = "F"
 cortisol_exp_F = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
 cortisol_exp_M = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
