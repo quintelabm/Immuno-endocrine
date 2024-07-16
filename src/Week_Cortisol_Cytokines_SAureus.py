@@ -10,6 +10,7 @@ Original file is located at
 from scipy.integrate import odeint, solve_ivp
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing
 import math
 import pandas as pd
 import csv
@@ -20,11 +21,11 @@ import csv
 # /*******************************************************************************
 #  * @param y - equations of simulation
 #  * @param t - evenly spaced array with time of simulation
-#  * @param flag - 
-#  * @param params - 
+#  * @param flag -
+#  * @param params -
 #  ******************************************************************************/
 def f(t, y, flag, params):
-     
+
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL                                                 # Half-maximum value associated with upregulation of IL-10 by IL-6
      n_610 = 34.8           # pg/mL                                                 # Half-maximum value associated with downregulation of IL-6 by IL-10
@@ -33,9 +34,9 @@ def f(t, y, flag, params):
      n_TNF6 = 560           # pg/mL                                                 # Half-maximum value associated with downregulation of TNF-a by IL-6
      n_810 = 17.4           # pg/mL                                                 # Half-maximum value associated with downregulation of IL-8 by IL-10
      n_8TNF = 185           # pg/mL                                                 # Half-maximum value associated with upregulation of IL-8 by TNF-a
-     n_M10 = 4.35           # pg/mL                                                 # 
+     n_M10 = 4.35           # pg/mL                                                 #
      n_TNF10 = 17.4         # pg/mL                                                 # Half-maximum value associated with downregulation of TNF-a by IL-10
-     n_MTNF = 0.1           # ?                                                     #  
+     n_MTNF = 0.1           # ?                                                     #
      h_106 = 3.68           # -                                                     # Hill function exponent associated with upregulation of IL-10 by IL-6
      h_610 = 4              # -                                                     # Hill function exponent associated with downregulation of IL-6 by IL-10
      h_66 = 1               # -                                                     # Hill function exponent associated with auto-negative feedback of IL-6
@@ -43,9 +44,9 @@ def f(t, y, flag, params):
      h_TNF6 = 2             # -                                                     # Hill function exponent associated with downregulation of TNF-a by IL-6
      h_810 = 1.5            # -                                                     # Hill function exponent associated with downregulation of IL-8 by IL-10
      h_8TNF = 3             # -                                                     # Hill function exponent associated with upregulation of IL-8 by TNF-a
-     h_M10 = 0.3            # -                                                     # 
+     h_M10 = 0.3            # -                                                     #
      h_TNF10 = 3            # -                                                     # Hill function exponent associated with downregulation of TNF-a by IL-10
-     h_MTNF = 3.16          # -                                                     # 
+     h_MTNF = 3.16          # -                                                     #
      k_106 = 0.0191         # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by IL-6
      k_6 = 4.64             # day-1                                                 # Activation rate (per hour) of IL-6
      k_6m = 0.01            # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by the activated macrophages
@@ -65,8 +66,8 @@ def f(t, y, flag, params):
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
      ktc  = 3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
-     kmct = 8.69            # ng/mL                                                 # 
-     kmtc = 2.78            # pg/mL                                                 # 
+     kmct = 8.69            # ng/mL                                                 #
+     kmtc = 2.78            # pg/mL                                                 #
      kcd  = 1.55            # h^-1                                                  # Cortisol degradation
      klt = 3.35             # h^-1
      klt6 = 1.0           # h^-1
@@ -76,9 +77,9 @@ def f(t, y, flag, params):
      beta_A = 0.02          # 1/day                                                 # Replication rate of the bacteria
      k_A = 50.0             # mm^3/day                                              # Carrying capacity of the bacteria
      m_A = 0.9              # 1/day                                                 # Phagocytosis of the bacteria
-     MR_max = 5             #                                                       # Macrophages resting max    
+     MR_max = 5             #                                                       # Macrophages resting max
      k_MA = 2.51            #                                                       # Activated macrophage decay rate
-     k_MR = 6               #                                                       # Resting macrophage decay rate 
+     k_MR = 6               #                                                       # Resting macrophage decay rate
      k_m = 1.414            #                                                       # Macrophage activation rate
 
      A = y[0]
@@ -96,85 +97,89 @@ def f(t, y, flag, params):
      #print("tamanho params:", np.size(params))
 
      #indice = params.indices.to_string(index=False)
-     
+
+
      closest_index = params['index'].sub(t).abs().idxmin()
      #print("closest:", closest_index)
 
      gluc = params.at[closest_index,'values']
     # print("gluc:", gluc)
-    
-      # gluc =1 
+
+      # gluc =1
           #print(gluc)
 
+     if TNF < 0:
+         TNF = 0
+
      dAdt = (beta_A * A *(1 - (A / k_A)) - m_A * A * MA)
-     
+
      dMAdt = (k_m + k_MTNF * pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF)) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A - k_MA * MA
-     
+
      dMRdt = -(k_m + k_MTNF * (pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF))) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A + k_MR * MR * (1 - MR / MR_max)
-          
+
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
      #added cortisol influence term: - klt*COR*(1-COR/(COR+kmct)) to dIL6dt
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
                + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
                 - k_6 * (IL6 - q_IL6)
-     
+
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
                + pow(IL10, h_810)))) * MA - k_8 * (IL8 - q_IL8)
-     
+
      dTNFdt = (k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
                + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
                + pow(IL10, h_TNF10)))) * MA - klt*COR*(1-COR/(COR+kmct)) - k_TNF * (TNF - q_TNF)
-     
+
      #dTNFdt = ((k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
      #          + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
      #         + pow(IL10, h_TNF10)))) * MA *klt*COR - k_TNF * (TNF - q_TNF))
 
-     dCORdt = ktc * (TNF/(TNF + kmtc)) * (Cmax - COR) * gluc - kcd*COR     
+     dCORdt = ktc * (TNF/(TNF + kmtc)) * (Cmax - COR) * gluc - kcd*COR
      #dCORdt = ktc*TNF- kcd*COR
 
      return [dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt]
 
 # /*******************************************************************************
 #  * @param sim_time - simulation time, in days
-#  * @param params - 
-#  * @param ic - 
+#  * @param params -
+#  * @param ic -
 #  ******************************************************************************/
 def Week_Cortisol_Cytokines_SAureus(sim_time, params, ic):
      '''
      # Initial Conditions by experimental data
-     A = 2                  # Cell/mm3 # S. aureus Bacteria               
+     A = 2                  # Cell/mm3 # S. aureus Bacteria
      MA = 5                 #  -       # Macrophages activated
      MR = 10                # Cell/mm3 # Macrophages resting
      IL_6 = 0               #          # Interleukin-6 (pro-inflammatory)
      IL_8 = 0               #          # Interleukin-8 (pro-inflammatory)
      IL_10 = 0.7            #          # Interleukin-10 (anti-inflammatory)
-     TNF = 0.17             #          # Tumor Necrosis Factor a (pro-inflammatory)     
+     TNF = 0.17             #          # Tumor Necrosis Factor a (pro-inflammatory)
      COR = 1                #          # Test value to Cortisol
      '''
-     A = ic[0]#2                  # Cell/mm3 # S. aureus Bacteria               
+     A = ic[0]#2                  # Cell/mm3 # S. aureus Bacteria
      MA = ic[1]#5                 #  -       # Macrophages activated
      MR = ic[2]#10                # Cell/mm3 # Macrophages resting
      IL_6 = ic[3]#0               #          # Interleukin-6 (pro-inflammatory)
      IL_8 = ic[4]#0               #          # Interleukin-8 (pro-inflammatory)
      IL_10 = ic[5]#0.7            #          # Interleukin-10 (anti-inflammatory)
-     TNF = ic[6]#0.17             #          # Tumor Necrosis Factor a (pro-inflammatory)     
+     TNF = ic[6]#0.17             #          # Tumor Necrosis Factor a (pro-inflammatory)
      COR = ic[7]#1                #          # Test value to Cortisol
 
 
      # Initial Conditions of Each Equation
      y0 = [A, MA, MR, IL_10, IL_6, IL_8, TNF, COR]
-          
+
      # Simulation Parameters
-     #sim_time = 7           # day        # Total time of simulation in min 
+     #sim_time = 7           # day        # Total time of simulation in min
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0, sim_time, deltaT) #7000 tambem
 
      #print("TEMPO DENTRO DO WEEK",[0,sim_time])
      sol = solve_ivp(f, [0,sim_time], y0, args=(sim_time, params), t_eval=t)
-     
+
      out_A = sol.y[0]
      out_MA = sol.y[1]
      out_MR = sol.y[2]
@@ -183,7 +188,7 @@ def Week_Cortisol_Cytokines_SAureus(sim_time, params, ic):
      out_IL8 = sol.y[5]
      out_TNF = sol.y[6]
      out_COR = sol.y[7]
-     
+
      outputs = [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR]
      return [t, outputs]
 
@@ -197,7 +202,7 @@ def plots_w_c_sa(t, folder,outputs, day):
      out_IL6 = 100 * (out_IL6 - min(out_IL6)) / (max(out_IL6) - min(out_IL6))
      out_IL8 = 100 * (out_IL8 - min(out_IL8)) / (max(out_IL8) - min(out_IL8))
      out_IL10 = 100 * (out_IL10 - min(out_IL10)) / (max(out_IL10) - min(out_IL10))
-     
+
      # Cytokines
      fig, (ax1) = plt.subplots(1,1)
      ax1.plot(t, out_TNF,'purple',  linewidth=3, label="TNF α")
@@ -210,8 +215,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax1.set_ylabel('Cytokine concentrations \n (relative values)', fontsize = 18)
      ax1.tick_params(labelsize=18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(10)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_Cytokines.png'
      plt.savefig(filename)
@@ -227,8 +232,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
      ax3.set_xlabel('Time (days)', fontsize = 18)
      ax3.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(8)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_IL-6.png'
      plt.savefig(filename)
@@ -243,8 +248,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
      ax3.set_xlabel('Time (days)', fontsize = 18)
      ax3.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(8)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_IL-8.png'
      plt.savefig(filename)
@@ -259,20 +264,20 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
      ax3.set_xlabel('Time (days)', fontsize = 18)
      ax3.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(8)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_IL-10.png'
      plt.savefig(filename)
 
 
-     #Macrophage 
+     #Macrophage
      fig, (ax2) = plt.subplots(1,1)
      ax2.plot(t, out_MR, 'b--',  linewidth=3, label="Resting")
      ax2.plot(t, out_MA, 'black',  linewidth=3, label="Activated")
      #ax2.plot(t, out_A,'r',  linewidth=3, label="A")
      ax2.tick_params(labelsize=18)
-     
+
      fontsize = 18
 
      #ax2.legend( ncol = 4, bbox_to_anchor = (0.5,-0.13), loc='upper center', fontsize = 18)
@@ -280,8 +285,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax2.set_xlabel('Time (days)', fontsize = 18)
      ax2.set_ylabel('Macrophage Concentration \n (cells/mm³ )', fontsize = 18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(10)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_Macrophage.png'
      plt.savefig(filename)
@@ -297,8 +302,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax2.set_xlabel('Time (days)', fontsize = 18)
      ax2.set_ylabel('S. aureus \n (cells/mm³ )', fontsize = 18)
 
-     fig.set_figwidth(10) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(10)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_S_aureus.png'
      plt.savefig(filename)
@@ -311,8 +316,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax3.legend( ncol = 4, loc='upper right', fontsize = 18)
      ax3.set_xlabel('Time (days)', fontsize = 18)
      ax3.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(8)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_Cortisol.png'
      plt.savefig(filename)
@@ -323,8 +328,8 @@ def plots_w_c_sa(t, folder,outputs, day):
      ax4.legend( ncol = 4, loc='lower left', fontsize = 18)
      ax4.set_xlabel('Time (days)', fontsize = 18)
      ax4.tick_params(labelsize=18)
-     fig.set_figwidth(8) 
-     fig.set_figheight(6) 
+     fig.set_figwidth(8)
+     fig.set_figheight(6)
      fig.tight_layout()
      filename = f'{folder}/{day}_TNF.png'
      plt.savefig(filename)
@@ -336,16 +341,16 @@ def plots_w_c_sa(t, folder,outputs, day):
 #  * @param day - current day
 #  ******************************************************************************/
 def save_output(folder,filename, outputs, day):
-     ### create new file 
+     ### create new file
      nfilename = f'{folder}/{day}_'+filename
      f = open (nfilename, 'w+')
      with open (nfilename, 'a+') as f:
           writer = csv.writer(f)
-          writer.writerow(outputs)  
-     
+          writer.writerow(outputs)
+
 
 #if __name__ == "__main__":
-     #df = pd.DataFrame() 
+     #df = pd.DataFrame()
      ### INITIAL CONDITIONS FIRST DAY ###
      #ic = [10,5,10,0,0,0.7,0.17,2.24]
      #outputs = W_Cortisol_Cytokines_SAureus(0,df,ic)
