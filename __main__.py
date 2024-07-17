@@ -2,10 +2,14 @@ import time
 import src.main
 import src.week_post_processing
 import multiprocessing
+import argparse
 
 start = time.time()
 
-simulation_days = 365
+parser = argparse.ArgumentParser()
+parser.add_argument("days", default=7, nargs="?", type=int)
+
+simulation_days: int = parser.parse_args().days
 simulation_gender = "F"
 cortisol_exp_F = [2.32, 2.24, 2.25, 2.43, 2.55, 2.80]
 cortisol_exp_M = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]

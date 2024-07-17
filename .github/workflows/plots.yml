@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Execute program
-        run: python .
+        run: python . 7
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
