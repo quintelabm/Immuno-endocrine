@@ -25,13 +25,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Execute program
-        run: |
-          python . 7
-          python . 365
+      - name: Run 7 day simulation
+        run: python . 7
 
-      - name: Upload artifacts
+      - name: Upload 7 day simulation artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: plots
+          name: 7-day plots
+          path: Output
+
+      - name: Run 365 day simulation
+        run: python . 365
+
+      - name: Upload 365 day simulation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: 365-day plots
           path: Output
