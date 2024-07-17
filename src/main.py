@@ -214,12 +214,11 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
 
     #added the decadeIndex term so the glucose increases for each decade
 
-    # Number of days for the simulation 
-    days = 7
+    days = 2 #number of days the simulation will run
     print(f'Simulation started! ({days} days)')
     print('Loading files...')
-    # create new file 
-    
+    # creates a new file
+
     if(simulation=='F'):
         folder = f'Output/female_{cortisol_exp}_week'
         out_filename = 'average_cortisol_female.csv'
@@ -338,11 +337,9 @@ def cortisolDecadesOneWeek(simulation, cortisol_exp, decadeIndex):
     gluc_intake_wcsa = complete_gluc_gi.iloc[::1440]
     #print(" O Tamanho glicose wcsa: ", np.size(gluc_intake_wcsa)) #1000
  
-    gluc_intake_wcsa = pd.concat([gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa,gluc_intake_wcsa], axis =0) # 7 days = 70000
-    #print("O tamanho da glicose para 1 semana é:", np.size(gluc_intake_wcsa))
-    #print("gluc = \n:", gluc_intake_wcsa)
-
-    #gluc_intake_wcsa['indices'] = t_wcsa
+    gluc_intake_wcsa = pd.concat([gluc_intake_wcsa,gluc_intake_wcsa], axis =0) # 7 days = 7000
+    #defines the array length based on how many days the simulation will run
+    #each "gluc_intake_wcsa" for a day, 7 days = length of 7000
     
     #gluc_intake_wcsa.reset_index(drop = True, inplace=True) # 0 até 699
     gluc_intake_wcsa.set_index(t_wcsa, inplace=True)
@@ -446,7 +443,7 @@ if __name__ == "__main__":
         for i in range(0,6):
             cortisolDecadesOneWeek(simulation=simulation, cortisol_exp=cortisol_exp[i], decadeIndex=i)
             
-    #defines the values for cortisol_exp and runs the simulation using each one of these values
+    #defines the values for cortisol_exp and runs the simulation using each one
     
     else:
         cortisol_exp = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
@@ -463,7 +460,6 @@ if __name__ == "__main__":
     #cortisol_exp for M simulation = [2.32, 2.25, 2.55, 2.62, 2.84, 3.13]
     
     print('Simulation done. Bye!')
-    print
 
     weekprocessing.week_post_processing(simulation)
 

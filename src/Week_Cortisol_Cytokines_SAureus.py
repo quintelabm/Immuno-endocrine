@@ -170,7 +170,7 @@ def Week_Cortisol_Cytokines_SAureus(sim_time, params, ic):
      # Simulation Parameters
      #sim_time = 7           # day        # Total time of simulation in min 
      deltaT = pow(10, -3)   # -          # Step size
-     t = np.arange(0, sim_time, deltaT) #7000 tambem
+     t = np.arange(0, sim_time, deltaT) #7000 as well
 
      #print("TEMPO DENTRO DO WEEK",[0,sim_time])
      sol = solve_ivp(f, [0,sim_time], y0, args=(sim_time, params), t_eval=t)
