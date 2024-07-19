@@ -34,6 +34,9 @@ jobs:
           name: 7-day plots
           path: Output
 
+      - name: Delete 7 day simulation output folder
+        run: rm -rf Output/
+
       - name: Run 365 day simulation
         run: python src/ 365
 
