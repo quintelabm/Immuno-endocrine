@@ -42,12 +42,3 @@ jobs:
         with:
           name: 365-day plots
           path: Output
-
-      - name: Run 3650 day simulation
-        run: python . 3650
-
-      - name: Upload 365 day simulation artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: 3650-day plots
-          path: Output
