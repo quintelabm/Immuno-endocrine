@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run 7 day simulation
-        run: python . 7
+        run: python src/ 7
 
       - name: Upload 7 day simulation artifacts
         uses: actions/upload-artifact@v4
@@ -35,7 +35,7 @@ jobs:
           path: Output
 
       - name: Run 365 day simulation
-        run: python . 365
+        run: python src/ 365
 
       - name: Upload 365 day simulation artifacts
         uses: actions/upload-artifact@v4
