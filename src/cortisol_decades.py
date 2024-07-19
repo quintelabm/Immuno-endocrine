@@ -59,7 +59,6 @@ def cortisolDecadesOneDay(simulation, cortisol_exp):
     deltaT_wcsa = pow(10, -3)  # Step size
     t_wcsa = np.arange(0, sim_time_wcsa, deltaT_wcsa)
 
-    start = time.time()
     # ................................
     #   begin simulation time loop
     # ................................
