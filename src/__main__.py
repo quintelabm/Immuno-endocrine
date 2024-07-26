@@ -35,11 +35,6 @@ for process in processes:
 for process in processes:
     process.join()
 
-# for i in range(6):
-#     src.main.cortisolDecadesOneWeek(
-#         simulation_gender, cortisol_exp_use[i], gluc_intake_decade_multiplier[i], simulation_days
-#     )
-
 end = time.time()
 
 print(f"Time: {int(end - start)}s")
