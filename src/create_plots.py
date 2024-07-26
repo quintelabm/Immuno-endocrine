@@ -25,28 +25,34 @@ def create_plots(simulation_gender: Literal["female", "male"], days: int, cortis
 
     plot_informations = [
         plot_information(
-            substance_name="IL-6", substance_name_on_file="il6", description="IL-6 concentrations \n (relative values)"
+            substance_name="IL-6",
+            substance_name_on_file="il6",
+            description="Concentrações de IL-6 \n (valores relativos)",
         ),
         plot_information(
-            substance_name="IL-8", substance_name_on_file="il8", description="IL-8 concentrations \n (relative values)"
+            substance_name="IL-8",
+            substance_name_on_file="il8",
+            description="Concentrações de IL-8 \n (valores relativos)",
         ),
         plot_information(
             substance_name="IL-10",
             substance_name_on_file="il10",
-            description="IL-10 concentrations \n (relative values)",
+            description="Concentrações de IL-10 \n (valores relativos)",
         ),
         plot_information(
-            substance_name="TNF", substance_name_on_file="TNF", description="TNF concentrations \n (relative values)"
+            substance_name="TNF",
+            substance_name_on_file="TNF",
+            description="Concentrações de TNF-⍺ \n (valores relativos)",
         ),
         plot_information(
             substance_name="Cortisol",
             substance_name_on_file="cortisol",
-            description="Cortisol concentrations \n (relative values)",
+            description="Concentrações de cortisol \n (valores relativos)",
         ),
         plot_information(
             substance_name="Macrophage",
             substance_name_on_file="ma",
-            description="Macrophage concentrations \n (relative values)",
+            description="Concentrações de macrófagos \n (valores relativos)",
         ),
     ]
 
@@ -61,7 +67,7 @@ def create_plots(simulation_gender: Literal["female", "male"], days: int, cortis
             value = pandas.read_csv(file_name, header=None)
             value_transposed = value.T
 
-            plot_label = f"Decade {decades[i]}"
+            plot_label = f"Década {decades[i]}"
             x_axis = numpy.linspace(0, days, days * 1000)
 
             y_axis = value_transposed[0]
@@ -70,7 +76,7 @@ def create_plots(simulation_gender: Literal["female", "male"], days: int, cortis
 
         ax2.legend(bbox_to_anchor=(0.5, -0.15), loc="upper center", fontsize=18, fancybox=True, shadow=True, ncol=5)
         ax2.set_ylabel(information.description, fontsize=18)
-        ax2.set_xlabel("Time (days)", fontsize=18)
+        ax2.set_xlabel("Tempo (dias)", fontsize=18)
         figure.set_figwidth(15)
         figure.set_figheight(6)
         figure.tight_layout()
