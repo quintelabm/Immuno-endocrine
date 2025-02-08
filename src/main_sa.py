@@ -68,7 +68,7 @@ if __name__ == "__main__":
         "outputs": ["Cortisol_Cytokines"],
     })
 
-    sp.sample_sobol(1024, calc_second_order=True)
+    sp.sample_sobol(4, calc_second_order=True) # 1024 samples
     model_values = np.zeros(sp.samples.shape[0])
 
     for i, X in enumerate(sp.samples):
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
     # Provide the results to the interface
     sp.set_results(model_values)
-    sp.analyze_sobol()
+    sp.analyze_sobol(nprocs=4)
 
     S1 = sp.analysis['S1']
     # print("S1: ", Si['S1'])

@@ -23,7 +23,7 @@ import csv
 #  * @param flag - 
 #  * @param params - 
 #  ******************************************************************************/
-def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parameters):
+def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      # Parameters by Brady et al., (2016):
      n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
      n_610 = brady_parameters[0] #34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10
@@ -89,13 +89,15 @@ def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parame
      TNF = y[6]
      COR = y[7]
      
-     if flag == 0:
-          gluc = 0
-     else:
-          #result_index = glucose[0].sub(t).abs().idxmin()
-          closest_index = params['index'].sub(t).abs().idxmin()  
-          #glucose = pd.DataFrame(params[0])
-          gluc = params.at[closest_index,'values']
+     # if flag == 0:
+     #      gluc = 0
+     # else:
+     #      #result_index = glucose[0].sub(t).abs().idxmin()
+     #      closest_index = params['index'].sub(t).abs().idxmin()  
+     #      #glucose = pd.DataFrame(params[0])
+     #      gluc = params.at[closest_index,'values']
+
+     gluc = 1
 
      dAdt = (beta_A * A *(1 - (A / k_A)) - m_A * A * MA)
 
@@ -136,7 +138,7 @@ def f(t, y, flag, params, brady_parameters, cortisol_parameters, quintela_parame
 #  * @param params - 
 #  * @param ic - 
 #  ******************************************************************************/
-def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_parameters, quintela_parameters):
+def W_Cortisol_Cytokines_SAureus(ic, brady_parameters, cortisol_parameters, quintela_parameters):
      '''
      # Initial Conditions by experimental data
      A = 2                  # Cell/mm3 # S. aureus Bacteria               
@@ -166,7 +168,7 @@ def W_Cortisol_Cytokines_SAureus(flag, params, ic, brady_parameters, cortisol_pa
      deltaT = pow(10, -3)   # -          # Step size
      t = np.arange(0,sim_time,deltaT)
 
-     sol = solve_ivp(f, [0,sim_time], y0, args=(flag, params, brady_parameters, cortisol_parameters, quintela_parameters), t_eval=t)
+     sol = solve_ivp(f, [0,sim_time], y0, args=(brady_parameters, cortisol_parameters, quintela_parameters), t_eval=t)
      
      out_A = sol.y[0]
      out_MA = sol.y[1]
