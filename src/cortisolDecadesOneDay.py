@@ -16,8 +16,8 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
     # Number of days for the simulation 
     #@todo simulation fails if number of days is 7
     days = 1
-    print(f'Simulation started! ({days} days)')
-    print('Loading files...')
+    # print(f'Simulation started! ({days} days)')
+    # print('Loading files...')
     # create new file 
 
     if(simulation=='F'):
@@ -59,7 +59,7 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
     #   begin simulation time loop
     #................................
 
-    for i in range(0,days,): 
+    # for i in range(0,days,): 
         # if (i == 0):
         #     #|------------------------------------------------------------------|
         #     #|  run first Cell-Cytokine-Cortisol Model with initial conditions  |
@@ -152,52 +152,52 @@ def cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, qui
         #############################################################################
         ### run Cell-Cytokine-Cortisol Model with glucose output from other model ###
         #############################################################################
-        print(f'Runing cell-cytokine model day {i}...')
-        ### out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR 
-        # ic = [outputs_wcsa[0][999], outputs_wcsa[1][999], outputs_wcsa[2][999], outputs_wcsa[3][999],
-        #       outputs_wcsa[4][999], outputs_wcsa[5][999], outputs_wcsa[6][999], outputs_wcsa[7][999]]
-        ### run one day for each decade
-        if (simulation=='F'):
-            cortisol_exp = cortisol_female_5.at[i,'value']
-        else:
-            cortisol_exp = cortisol_male_5.at[i,'value']
-        ic = [2,0,10,0,0,0.7,0.17,cortisol_exp]
-        # print(ic)´
-        #REMOVEMOS GLICOSE MANTEMOS CONSTANTE PARA TESTAR O MODELO
-        [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(ic, brady_parameters, cortisol_parameters, quintela_parameters)
-        # write on file
-        # wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
-        # wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
-        # wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
-        # wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
-        # wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
-        # wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
-        # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,i)
+    # print(f'Runing cell-cytokine model day {1}...')
+    ### out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR 
+    # ic = [outputs_wcsa[0][999], outputs_wcsa[1][999], outputs_wcsa[2][999], outputs_wcsa[3][999],
+    #       outputs_wcsa[4][999], outputs_wcsa[5][999], outputs_wcsa[6][999], outputs_wcsa[7][999]]
+    ### run one day for each decade
+    if (simulation=='F'):
+        cortisol_exp = cortisol_female_5.at[1,'value']
+    else:
+        cortisol_exp = cortisol_male_5.at[1,'value']
+    ic = [2,0,10,0,0,0.7,0.17,cortisol_exp]
+    # print(ic)´
+    #REMOVEMOS GLICOSE MANTEMOS CONSTANTE PARA TESTAR O MODELO
+    [t_wcsa, outputs_wcsa] = wcsa.W_Cortisol_Cytokines_SAureus(ic, brady_parameters, cortisol_parameters, quintela_parameters)
+    # write on file
+    # wcsa.save_output(folder,'bacteria.csv',outputs_wcsa[0],i)
+    # wcsa.save_output(folder,'ma.csv',outputs_wcsa[1],i)
+    # wcsa.save_output(folder,'mr.csv',outputs_wcsa[2],i)
+    # wcsa.save_output(folder,'il10.csv',outputs_wcsa[3],i)
+    # wcsa.save_output(folder,'TNF.csv',outputs_wcsa[6],i)
+    # wcsa.save_output(folder,'cortisol.csv',outputs_wcsa[7],i)
+    # wcsa.plots_w_c_sa(t_wcsa,folder,outputs_wcsa,1)
+    
+    # write last simulation to file
+    # if (i==(days-1)):
+        ########################################################        
+        #### convert cortisol values per day to per minutes ####
+        ########################################################
+        # Obtain output from cell-cytokine-cortisol model
+        # cortisol_wcsa = pd.DataFrame(outputs_wcsa[7], columns = ['values'])
+        # # Extract 1000 cortisol values (each 1440 steps)
+        # #cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 1440, axis=0))
+        # cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 720, axis=0))
+        # cortisol_gi.columns = ['values']
+        # # Change index to t_gi
+        # cortisol_gi.set_index(t_gi, inplace=True)
+        # cortisol_gi.reset_index(inplace=True)
         
-        # write last simulation to file
-        # if (i==(days-1)):
-            ########################################################        
-            #### convert cortisol values per day to per minutes ####
-            ########################################################
-            # Obtain output from cell-cytokine-cortisol model
-            # cortisol_wcsa = pd.DataFrame(outputs_wcsa[7], columns = ['values'])
-            # # Extract 1000 cortisol values (each 1440 steps)
-            # #cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 1440, axis=0))
-            # cortisol_gi = pd.DataFrame(np.repeat(cortisol_wcsa.values, 720, axis=0))
-            # cortisol_gi.columns = ['values']
-            # # Change index to t_gi
-            # cortisol_gi.set_index(t_gi, inplace=True)
-            # cortisol_gi.reset_index(inplace=True)
-            
-            # avg_cor = cortisol_gi.iloc[::480000].mean()['values']
-            # #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
-            # print("tamanho da media do COR: ", np.size(avg_cor))
-            # data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
-            # with open (folder+out_filename, 'a+') as f:
-            #     writer = csv.writer(f)
-            #     writer.writerow(data)
-        
-        #### end for (time loop) ####
+        # avg_cor = cortisol_gi.iloc[::480000].mean()['values']
+        # #avg_cor = cortisol_gi.iloc[::240000].mean()['values']
+        # print("tamanho da media do COR: ", np.size(avg_cor))
+        # data = [i+1, avg_cor,cortisol_gi['values'].max(), cortisol_gi['values'].min(), cortisol_gi['values'].std()]
+        # with open (folder+out_filename, 'a+') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(data)
+    
+    #### end for (time loop) ####
     return [t_wcsa, outputs_wcsa]
 #-----------------------------------------------------------------------------------------------------------------------
  

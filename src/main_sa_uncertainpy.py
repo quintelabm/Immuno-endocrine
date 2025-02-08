@@ -30,9 +30,9 @@ parametersDictionary = {
 # ======================================================================================
 # CONFIGURAÇÃO DA ANÁLISE (EDITÁVEL)
 # ======================================================================================
-nr_samples = 50      # NÚMERO DE AMOSTRAS (cada amostra roda 1 vez o modelo) ⚠️ Altere aqui!
+nr_samples = 10      # NÚMERO DE AMOSTRAS (cada amostra roda 1 vez o modelo) ⚠️ Altere aqui!
 parallel = True      # Usar paralelismo (True = máximo desempenho)
-seed = None          # None = mais rápido | 42 = resultados reproduzíveis
+seed = 42           # Semente aleatória (reprodutibilidade)
 
 
 class CytokineModel(un.Model):
