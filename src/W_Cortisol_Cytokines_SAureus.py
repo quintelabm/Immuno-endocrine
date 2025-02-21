@@ -25,51 +25,51 @@ import csv
 #  ******************************************************************************/
 def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      # Parameters by Brady et al., (2016):
-     n_106 = 560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
-     n_610 = brady_parameters[0] #34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10
-     n_66 = brady_parameters[1] #560             # pg/mL    # Half-maximum value associated with the auto-negative feedback of IL-6
-     n_6TNF = brady_parameters[2] #185           # pg/mL    # Half-maximum value associated with upregulation of IL-6 by TNF-a
-     n_TNF6 = 560           # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-6
-     n_810 = 17.4           # pg/mL    # Half-maximum value associated with downregulation of IL-8 by IL-10
-     n_8TNF = 185           # pg/mL    # Half-maximum value associated with upregulation of IL-8 by TNF-a
-     n_M10 = 4.35           # pg/mL    # 
-     n_TNF10 = 17.4         # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-10
-     n_MTNF = brady_parameters[3] #0.1           # ?        #  
-     h_106 = 3.68           # -        # Hill function exponent associated with upregulation of IL-10 by IL-6
-     h_610 = brady_parameters[4] #4              # -        # Hill function exponent associated with downregulation of IL-6 by IL-10
-     h_66 = brady_parameters[5] #1               # -        # Hill function exponent associated with auto-negative feedback of IL-6
-     h_6TNF = brady_parameters[6] #2             # -        # Hill function exponent associated with upregulation of IL-6 by TNF-a
-     h_TNF6 = 2             # -        # Hill function exponent associated with downregulation of TNF-a by IL-6
-     h_810 = 1.5            # -        # Hill function exponent associated with downregulation of IL-8 by IL-10
-     h_8TNF = 3             # -        # Hill function exponent associated with upregulation of IL-8 by TNF-a
-     h_M10 = 0.3            # -        # 
-     h_TNF10 = 3            # -        # Hill function exponent associated with downregulation of TNF-a by IL-10
-     h_MTNF = brady_parameters[7] #3.16          # -        # 
-     k_106 = 0.0191         # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by IL-6
-     k_6 = brady_parameters[8] #4.64             # day-1                                                 # Activation rate (per hour) of IL-6
-     k_6m = brady_parameters[9] #0.01            # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by the activated macrophages
-     k_6TNF = brady_parameters[10] #0.81          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by TNF-a
-     k_8 = 0.464            # day-1                                                 # Activation rate (per hour) of IL-8
-     k_8m = 0.056           # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by the activated macrophages
-     k_8TNF = 0.56          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by TNF-a
-     k_10 = 1.1             # day-1                                                 # Activation rate (per hour) of IL-10
-     k_10m = 0.19           # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by the activated macrophages
-     k_TNF = 200            # day–1                                                 # Activation rate (per hour) of TNF-a
-     k_TNFM = 1.5           # relative cytokine concentration/(day · # of cells)    # Upregulation of TNF-a by the activated macrophages
-     k_MTNF = 8.65          # hr-1                                                  # Activation rate of resting macrophages influenced by
-     q_IL6 = 0.6            # relative concentration                                # The concentration of IL-6 in the absence of a pathogen
-     q_IL8 = 0.2            # relative concentration                                # The concentration of IL-8 in the absence of a pathogen
-     q_IL10 = 0.15          # relative concentration                                # The concentration of IL-10 in the absence of a pathogen
-     q_TNF = 0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
+     n_106 = brady_parameters[0] #560            # pg/mL    # Half-maximum value associated with upregulation of IL-10 by IL-6
+     n_610 = brady_parameters[1] #34.8           # pg/mL    # Half-maximum value associated with downregulation of IL-6 by IL-10
+     n_66 = brady_parameters[2] #560             # pg/mL    # Half-maximum value associated with the auto-negative feedback of IL-6
+     n_6TNF = brady_parameters[3] #185           # pg/mL    # Half-maximum value associated with upregulation of IL-6 by TNF-a
+     n_TNF6 = brady_parameters[4] #560           # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-6
+     n_810 = brady_parameters[5] #17.4           # pg/mL    # Half-maximum value associated with downregulation of IL-8 by IL-10
+     n_8TNF = brady_parameters[6] #185           # pg/mL    # Half-maximum value associated with upregulation of IL-8 by TNF-a
+     n_M10 = brady_parameters[7] #4.35           # pg/mL    # 
+     n_TNF10 = brady_parameters[8] #17.4         # pg/mL    # Half-maximum value associated with downregulation of TNF-a by IL-10
+     n_MTNF = brady_parameters[9] #0.1           # ?        #  
+     h_106 = brady_parameters[10] #3.68           # -        # Hill function exponent associated with upregulation of IL-10 by IL-6
+     h_610 = brady_parameters[11] #4              # -        # Hill function exponent associated with downregulation of IL-6 by IL-10
+     h_66 = brady_parameters[12] #1               # -        # Hill function exponent associated with auto-negative feedback of IL-6
+     h_6TNF = brady_parameters[13] #2             # -        # Hill function exponent associated with upregulation of IL-6 by TNF-a
+     h_TNF6 = brady_parameters[14] #2             # -        # Hill function exponent associated with downregulation of TNF-a by IL-6
+     h_810 = brady_parameters[15] #1.5            # -        # Hill function exponent associated with downregulation of IL-8 by IL-10
+     h_8TNF = brady_parameters[16] #3             # -        # Hill function exponent associated with upregulation of IL-8 by TNF-a
+     h_M10 = brady_parameters[17] #0.3            # -        # 
+     h_TNF10 = brady_parameters[18] #3            # -        # Hill function exponent associated with downregulation of TNF-a by IL-10
+     h_MTNF = brady_parameters[19] #3.16          # -        # 
+     k_106 = brady_parameters[20] #0.0191         # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by IL-6
+     k_6 = brady_parameters[21] #4.64             # day-1                                                 # Activation rate (per hour) of IL-6
+     k_6m = brady_parameters[22] #0.01            # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by the activated macrophages
+     k_6TNF = brady_parameters[23] #0.81          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-6 by TNF-a
+     k_8 = brady_parameters[24] #0.464            # day-1                                                 # Activation rate (per hour) of IL-8
+     k_8m = brady_parameters[25] #0.056           # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by the activated macrophages
+     k_8TNF = brady_parameters[26] #0.56          # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-8 by TNF-a
+     k_10 = brady_parameters[27] #1.1             # day-1                                                 # Activation rate (per hour) of IL-10
+     k_10m = brady_parameters[28] #0.19           # relative cytokine concentration/(day · # of cells)    # Upregulation of IL-10 by the activated macrophages
+     k_TNF = brady_parameters[29] #200            # day–1                                                 # Activation rate (per hour) of TNF-a
+     k_TNFM = brady_parameters[30] #1.5           # relative cytokine concentration/(day · # of cells)    # Upregulation of TNF-a by the activated macrophages
+     k_MTNF = brady_parameters[31] #8.65          # hr-1                                                  # Activation rate of resting macrophages influenced by
+     q_IL6 = brady_parameters[32] #0.6            # relative concentration                                # The concentration of IL-6 in the absence of a pathogen
+     q_IL8 = brady_parameters[33] #0.2            # relative concentration                                # The concentration of IL-8 in the absence of a pathogen
+     q_IL10 = brady_parameters[34] #0.15          # relative concentration                                # The concentration of IL-10 in the absence of a pathogen
+     q_TNF = brady_parameters[35] #0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
      ktc  = cortisol_parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
      kmtc = cortisol_parameters[1] #2.78            # pg/mL                                                 # 
      kmct = cortisol_parameters[2] #8.69            # ng/mL                                                 # 
-     kcd  = 1.55            # h^-1                                                  # Cortisol degradation
-     klt  = 3.35             # h^-1
-     klt6 = cortisol_parameters[3] #1.35             # h^-1
-     Cmax = 3
+     kcd  = cortisol_parameters[3] #1.55            # h^-1                                                  # Cortisol degradation
+     klt  = cortisol_parameters[4] #3.35             # h^-1
+     klt6 = cortisol_parameters[5] #1.35             # h^-1
+     Cmax = cortisol_parameters[6] #3
 
      # Parameters by Quintela et al., (2014)
      beta_A = 0.02  # 1/day           # Replication rate of the bacteria
@@ -108,35 +108,65 @@ def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      dMAdt = (k_m + k_MTNF * pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF)) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A - k_MA * MA
      
-     if(dMAdt < 0):
+     print("dMAdt: ", dMAdt)
+
+     if(dMAdt < 0 or np.isnan(dMAdt)):
           dMAdt = 0
      
      dMRdt = -(k_m + k_MTNF * (pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF))) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A + k_MR * MR * (1 - MR / MR_max)
      
-     if(dMRdt < 0):
+     print("dMRdt: ", dMRdt)
+
+     if(dMRdt < 0 or np.isnan(dMRdt)):
           dMRdt = 0
           
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
+
+     print("dIL10dt: ", dIL10dt)
+
+     if (np.isnan(dIL10dt) or dIL10dt < 0):
+          dIL10dt = 0
+
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
                + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
                 - k_6 * (IL6 - q_IL6)
      
+     print("dIL6dt: ", dIL6dt)
+
+     if (np.isnan(dIL6dt) or dIL6dt < 0):
+          dIL6dt = 0
+     
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
                + pow(IL10, h_810)))) * MA - k_8 * (IL8 - q_IL8)
+     
+     print("dIL8dt: ", dIL8dt)
+
+     if (np.isnan(dIL8dt) or dIL8dt < 0):
+          dIL8dt = 0
      
      dTNFdt = (k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
                + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
                + pow(IL10, h_TNF10)))) * MA - klt*COR*(1-COR/(COR+kmct)) - k_TNF * (TNF - q_TNF)
      
+     print("dTNFdt: ", dTNFdt)
+
+     if (np.isnan(dTNFdt) or dTNFdt < 0):
+          dTNFdt = 0
      #dTNFdt = ((k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
      #          + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
      #         + pow(IL10, h_TNF10)))) * MA *klt*COR - k_TNF * (TNF - q_TNF))
 
      dCORdt = ktc * (TNF/(TNF + kmtc)) * (Cmax - COR) * gluc - kcd*COR     
+
+     print("dCORdt: ", dCORdt)
+
+     if (np.isnan(dCORdt) or dCORdt < 0):
+          dCORdt = 0
      #dCORdt = ktc*TNF- kcd*COR
 
+     print("total", dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt)
      return [dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt]
 
 
@@ -178,6 +208,8 @@ def W_Cortisol_Cytokines_SAureus(ic, brady_parameters, cortisol_parameters, quin
 
      sol = solve_ivp(f, [0,sim_time], y0, args=(brady_parameters, cortisol_parameters, quintela_parameters), t_eval=t)
      
+     print(sol.y)
+     print("================================================================")
      out_A = sol.y[0]
      out_MA = sol.y[1]
      out_MR = sol.y[2]
