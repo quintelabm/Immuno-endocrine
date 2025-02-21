@@ -102,71 +102,66 @@ def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      else:
           gluc = 2
 
+     if(n_MTNF == 0):
+          n_MTNF = 0.1
+     if(n_M10 == 0):
+          n_M10 = 4.35
+     if(MR_max == 0):
+          MR_max = 5
+     if(n_106 == 0):
+          n_106 = 560
+     if(n_6TNF == 0):
+          n_6TNF = 185
+     if(n_66 == 0):
+          n_66 = 560
+     if(n_610 == 0):
+          n_610 = 34.8
+     if(n_8TNF == 0):
+          n_8TNF = 185
+     if(n_810 == 0):
+          n_810 = 17.4
+     if(n_TNF6 == 0):
+          n_TNF6 = 560
+     if(n_TNF10 == 0):
+          n_TNF10 = 17.4
+
+     TNF = 0.17 if TNF < 0 else TNF
+     IL6 = 0.7 if IL6 < 0 else IL6
+     IL10 = 0.7 if IL10 < 0 else IL10
+     
+
      dAdt = (beta_A * A *(1 - (A / k_A)) - m_A * A * MA)
 
      #dAdt_wo = (beta_A * A_wo *(1 - (A_wo / k_A)) - m_A * A_wo * MA)
      dMAdt = (k_m + k_MTNF * pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF)) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A - k_MA * MA
      
-     print("dMAdt: ", dMAdt)
-
-     if(dMAdt < 0 or np.isnan(dMAdt)):
-          dMAdt = 0
-     
      dMRdt = -(k_m + k_MTNF * (pow(TNF, h_MTNF) / (pow(n_MTNF, h_MTNF) + pow(TNF, h_MTNF))) * (pow(n_M10, h_M10) / (pow(n_M10, h_M10)\
                + pow(IL10, h_M10)))) * MR * A + k_MR * MR * (1 - MR / MR_max)
      
-     print("dMRdt: ", dMRdt)
 
-     if(dMRdt < 0 or np.isnan(dMRdt)):
-          dMRdt = 0
-          
      dIL10dt = (k_10m + k_106 * (pow(IL6, h_106) / (pow(n_106, h_106) + pow(IL6, h_106)))) * MA \
                 - k_10 * (IL10 - q_IL10)
-
-     print("dIL10dt: ", dIL10dt)
-
-     if (np.isnan(dIL10dt) or dIL10dt < 0):
-          dIL10dt = 0
 
      dIL6dt = (k_6m + k_6TNF * (pow(TNF, h_6TNF) / (pow(n_6TNF, h_6TNF) + pow(TNF, h_6TNF))) * (pow(n_66, h_66) / (pow(n_66, h_66)\
                + pow(IL6, h_66))) * (pow(n_610, h_610) / (pow(n_610, h_610) + pow(IL10, n_610)))) * MA - klt6*COR*(1-COR/(COR+kmct))\
                 - k_6 * (IL6 - q_IL6)
      
-     print("dIL6dt: ", dIL6dt)
-
-     if (np.isnan(dIL6dt) or dIL6dt < 0):
-          dIL6dt = 0
-     
      dIL8dt = (k_8m + k_8TNF * (pow(TNF, h_8TNF) / (pow(TNF, h_8TNF) + pow(n_8TNF, h_8TNF))) * (pow(n_810, h_810) / (pow(n_810, h_810)\
                + pow(IL10, h_810)))) * MA - k_8 * (IL8 - q_IL8)
-     
-     print("dIL8dt: ", dIL8dt)
-
-     if (np.isnan(dIL8dt) or dIL8dt < 0):
-          dIL8dt = 0
      
      dTNFdt = (k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
                + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
                + pow(IL10, h_TNF10)))) * MA - klt*COR*(1-COR/(COR+kmct)) - k_TNF * (TNF - q_TNF)
-     
-     print("dTNFdt: ", dTNFdt)
 
-     if (np.isnan(dTNFdt) or dTNFdt < 0):
-          dTNFdt = 0
      #dTNFdt = ((k_TNFM * (pow(n_TNF6, h_TNF6) / (pow(n_TNF6, h_TNF6) \
      #          + pow(IL6, h_TNF6))) * (pow(n_TNF10, h_TNF10) / (pow(n_TNF10, h_TNF10)\
      #         + pow(IL10, h_TNF10)))) * MA *klt*COR - k_TNF * (TNF - q_TNF))
 
      dCORdt = ktc * (TNF/(TNF + kmtc)) * (Cmax - COR) * gluc - kcd*COR     
 
-     print("dCORdt: ", dCORdt)
-
-     if (np.isnan(dCORdt) or dCORdt < 0):
-          dCORdt = 0
      #dCORdt = ktc*TNF- kcd*COR
 
-     print("total", dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt)
      return [dAdt, dMAdt, dMRdt, dIL10dt, dIL6dt, dIL8dt, dTNFdt, dCORdt]
 
 
