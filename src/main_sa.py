@@ -53,9 +53,12 @@ parametersDictionary = {
     'q_TNF': 0.14,
 
     'beta_A': 0.02,
-    'k_A': 50,
+    'k_A': 50.0,
     'm_A': 0.9,
-    'k_m': 1.414,
+    'MR_max': 5,  
+    'k_MA': 2.51,
+    'k_MR': 6,
+    'k_m': 1.414
 }
 
 def parametersInterval(parameters):
@@ -136,7 +139,7 @@ if __name__ == "__main__":
     names = ['ktc', 'kmtc', 'kmct', 'kcd', 'klt', 'klt6', 'Cmax', 'n_106', 'n_610', 
              'n_66', 'n_6TNF', 'n_TNF6', 'n_810', 'n_8TNF', 'n_M10', 'n_TNF10', 'n_MTNF', 'h_106', 'h_610', 
              'h_66', 'h_6TNF', 'h_TNF6', 'h_810', 'h_8TNF', 'h_M10', 'h_TNF10', 'h_MTNF', 'k_106', 'k_6', 'k_6m', 'k_6TNF', 'k_8', 'k_8m', 'k_8TNF', 'k_10', 'k_10m',
-             'k_TNF',  'k_TNFM', 'k_MTNF', 'q_IL6', 'q_IL8', 'q_IL10', 'q_TNF']
+             'k_TNF',  'k_TNFM', 'k_MTNF', 'q_IL6', 'q_IL8', 'q_IL10', 'q_TNF', 'beta_A', 'k_A', 'm_A', 'MR_max', 'k_MA', 'k_MR', 'k_m']
     
     sp = ProblemSpec({
         "names": names,
@@ -151,13 +154,13 @@ if __name__ == "__main__":
     for i, X in enumerate(sp.samples):
         [ktc, kmtc, kmct, kcd, klt, klt6, Cmax, n_106, n_610, n_66, n_6TNF, n_TNF6, n_810, n_8TNF, n_M10,
          n_TNF10, n_MTNF, h_106, h_610, h_66, h_6TNF, h_TNF6, h_810, h_8TNF, h_M10, h_TNF10, h_MTNF, k_106, k_6, 
-         k_6m, k_6TNF, k_8, k_8m, k_8TNF, k_TNF, k_10, k_10m, k_TNFM, k_MTNF, q_IL6, q_IL8, q_IL10, q_TNF] = X
+         k_6m, k_6TNF, k_8, k_8m, k_8TNF, k_TNF, k_10, k_10m, k_TNFM, k_MTNF, q_IL6, q_IL8, q_IL10, q_TNF, beta_A, k_A, m_A, MR_max, k_MA, k_MR, k_m] = X
 
         cortisol_parameters = [ktc, kmtc, kmct, kcd, klt, klt6, Cmax]
         brady_parameters = [n_106, n_610, n_66, n_6TNF, n_TNF6, n_810, n_8TNF, n_M10, n_TNF10, n_MTNF, 
                           h_106, h_610, h_66, h_6TNF, h_TNF6, h_810, h_8TNF, h_M10, h_TNF10, h_MTNF, k_106, k_6, 
                           k_6m, k_6TNF, k_8, k_8m, k_8TNF, k_10, k_10m, k_TNF, k_TNFM, k_MTNF, q_IL6, q_IL8, q_IL10, q_TNF]
-        quintela_parameters = []
+        quintela_parameters = [beta_A, k_A, m_A, MR_max, k_MA, k_MR, k_m]
 
         model_values[i] = citokynes(cortisol_parameters, brady_parameters, quintela_parameters)
 
