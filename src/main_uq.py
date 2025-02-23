@@ -5,7 +5,7 @@ import uncertainpy as un
 import chaospy as cp
 
 
-def COR(ktc,kmtc, kmct, kcd, klt, klt6, cmax, nM10, nTNF10, nMTNF, hM10, hTNF10, hMTNF, k_6, k_6m, k_8, k_8m, k_10, k_10m, k_TNF, k_TNFM, k_MTNF, q_IL6, q_IL8, q_TNF, m_A, MR_max, k_MA, k_MR):
+def A(ktc,kmtc, kmct, kcd, klt, klt6, cmax, nM10, nTNF10, nMTNF, hM10, hTNF10, hMTNF, k_6, k_6m, k_8, k_8m, k_10, k_10m, k_TNF, k_TNFM, k_MTNF, q_IL6, q_IL8, q_TNF, m_A, MR_max, k_MA, k_MR):
   simulation = 'F'
 
   cortisol_parameters = [ktc, kmtc, kmct, kcd, klt, klt6, cmax]
@@ -16,7 +16,7 @@ def COR(ktc,kmtc, kmct, kcd, klt, klt6, cmax, nM10, nTNF10, nMTNF, hM10, hTNF10,
                                       quintela_parameters, cortisol_exp=2.32)
   [t_wcsa, outputs_wcsa] = output
   [out_A, out_MA, out_MR, out_IL10, out_IL6, out_IL8, out_TNF, out_COR] = outputs_wcsa
-  return t_wcsa, out_COR
+  return t_wcsa, out_A
 
 
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     k_MR = cp.Uniform(6*0.9, 6*1.1)
 
     # Create a model from the function and add labels
-    model = un.Model(COR, labels=["Time (day)", "Cortisol (pg/mL)"])
+    model = un.Model(A, labels=["Time (day)", "S. aureus Bacteria (Cell/mm3)"])
 
     # Define the parameters dictionary
     parameters = {
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     # Perform the uncertainty quantification,
     # which automatically use the Rosenblatt transformation
     # We set the seed to easier be able to reproduce the result
-    data = UQ.quantify(seed=42, plot="condensed_no_sensitivity", nr_mc_samples=100, method="mc")#polynomial_order=3
+    data = UQ.quantify(seed=42, plot="condensed_no_sensitivity", nr_mc_samples=1024, method="mc")#polynomial_order=3
     
     end = time.time()
     print(f"Time: {int(end - start)}s" )
