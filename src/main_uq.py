@@ -5,11 +5,11 @@ import uncertainpy as un
 import chaospy as cp
 
 
-def citokynes(ktc,kmtc):
+def citokynes(ktc,kmtc, kmct, kcd, klt, klt6, cmax, nM10, nTNF10, nMTNF, hM10, hTNF10, hMTNF, k_6, k_6m, k_8, k_8m, k_10, k_10m, k_TNF, k_TNFM, k_MTNF):
   simulation = 'F'
 
-  cortisol_parameters = [ktc, kmtc]
-  brady_parameters = []
+  cortisol_parameters = [ktc, kmtc, kmct, kcd, klt, klt6, cmax]
+  brady_parameters = [nM10, nTNF10, nMTNF, hM10, hTNF10, hMTNF, k_6, k_6m, k_8, k_8m, k_10, k_10m, k_TNF, k_TNFM, k_MTNF]
   quintela_parameters = []
   
   output = cdd.cortisolDecadesOneDay(simulation, cortisol_parameters, brady_parameters, 
@@ -23,9 +23,32 @@ def citokynes(ktc,kmtc):
 if __name__ == "__main__":
     start = time.time()
 
+    # q_tnf, q_il6, q_il8, ma, mr_max, k_ma, k_mr
      # Create the distributions
-    ktc  = cp.Uniform(3.09, 3.77)         # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
-    kmtc = cp.Uniform(2.50, 3.06)  
+    ktc  = cp.Uniform(3.43*0.9, 3.43*1.1)         # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
+    kmtc = cp.Uniform(2.78*0.9, 2.78*1.1) 
+    kmct = cp.Uniform(8.69*0.9, 8.69*1.1) 
+    kcd = cp.Uniform(1.55*0.9, 1.55*1.1)
+    klt = cp.Uniform(3.35*0.9, 3.35*1.1)
+    klt6 = cp.Uniform(1.35*0.9, 1.35*1.1)
+    cmax = cp.Uniform(3*0.9, 3*1.1)
+
+    nM10 = cp.Uniform(4.35*0.9, 4.35*1.1)
+    nTNF10 = cp.Uniform(17.4*0.9, 17.4*1.1)
+    nMTNF = cp.Uniform(0.1*0.9, 0.1*1.1)
+    hM10 = cp.Uniform(0.3*0.9, 0.3*1.1)
+    hTNF10 = cp.Uniform(3*0.9, 3*1.1)
+    hMTNF = cp.Uniform(3.16*0.9, 3.16*1.1)
+
+    k_6 = cp.Uniform(4.64*0.9, 4.64*1.1)
+    k_6m = cp.Uniform(0.01*0.9, 0.01*1.1)
+    k_8 = cp.Uniform(0.464*0.9, 0.464*1.1)
+    k_8m = cp.Uniform(0.056*0.9, 0.056*1.1)
+    k_10 = cp.Uniform(1.1*0.9, 1.1*1.1)
+    k_10m = cp.Uniform(0.19*0.9, 0.19*1.1)
+    k_TNF = cp.Uniform(200*0.9, 200*1.1)
+    k_TNFM = cp.Uniform(1.5*0.9, 1.5*1.1)
+    k_MTNF = cp.Uniform(8.65*0.9, 8.65*1.1)
 
     # Create a model from the function and add labels
     model = un.Model(citokynes, labels=["Time (s)", "COR (pg/mL)"])
@@ -33,7 +56,27 @@ if __name__ == "__main__":
     # Define the parameters dictionary
     parameters = {
         "ktc": ktc,
-        "kmtc": kmtc
+        "kmtc": kmtc,
+        "kmct": kmct,
+        "kcd": kcd,
+        "klt": klt,
+        "klt6": klt6,
+        "cmax": cmax,
+        "nM10": nM10,
+        "nTNF10": nTNF10,
+        "nMTNF": nMTNF,
+        "hM10": hM10,
+        "hTNF10": hTNF10,
+        "hMTNF": hMTNF,
+        "k_6": k_6,
+        "k_6m": k_6m,
+        "k_8": k_8,
+        "k_8m": k_8m,
+        "k_10": k_10,
+        "k_10m": k_10m,
+        "k_TNF": k_TNF,
+        "k_TNFM": k_TNFM,
+        "k_MTNF": k_MTNF
     }
 
     # We can use the parameters dictionary directly
@@ -43,7 +86,7 @@ if __name__ == "__main__":
     # Perform the uncertainty quantification,
     # which automatically use the Rosenblatt transformation
     # We set the seed to easier be able to reproduce the result
-    data = UQ.quantify(seed=42, plot="condensed_no_sensitivity")
+    data = UQ.quantify(seed=42, plot="evaluations", nr_mc_samples=100, method="mc")#polynomial_order=3
     
     end = time.time()
     print(f"Time: {int(end - start)}s" )
