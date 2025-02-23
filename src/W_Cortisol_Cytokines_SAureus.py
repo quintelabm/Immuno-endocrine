@@ -57,10 +57,10 @@ def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      k_TNF = brady_parameters[12]#200            # day–1                                                 # Activation rate (per hour) of TNF-a
      k_TNFM = brady_parameters[13]#1.5           # relative cytokine concentration/(day · # of cells)    # Upregulation of TNF-a by the activated macrophages
      k_MTNF = brady_parameters[14]#8.65          # hr-1                                                  # Activation rate of resting macrophages influenced by
-     q_IL6 = 0.6            # relative concentration                                # The concentration of IL-6 in the absence of a pathogen
-     q_IL8 = 0.2            # relative concentration                                # The concentration of IL-8 in the absence of a pathogen
+     q_IL6 = brady_parameters[15]#0.6            # relative concentration                                # The concentration of IL-6 in the absence of a pathogen
+     q_IL8 = brady_parameters[16]#0.2            # relative concentration                                # The concentration of IL-8 in the absence of a pathogen
      q_IL10 = 0.15          # relative concentration                                # The concentration of IL-10 in the absence of a pathogen
-     q_TNF = 0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
+     q_TNF = brady_parameters[17]#0.14           # relative concentration                                # The concentration of TNF-a in the absence of a pathogendescription
 
      # Cortisol parameters by Pritchard-Bell, Ari  (2016) - Best values
      ktc  = cortisol_parameters[0] #3.43            # ng/(pg·h)                                             # The magnitude of cortisol activation by TNF
@@ -74,10 +74,10 @@ def f(t, y, brady_parameters, cortisol_parameters, quintela_parameters):
      # Parameters by Quintela et al., (2014)
      beta_A = 0.02  # 1/day           # Replication rate of the bacteria
      k_A = 50.0     # mm^3/day        # Carrying capacity of the bacteria
-     m_A = 0.9      # 1/day           # Phagocytosis of the bacteria
-     MR_max = 5     # Macrophages resting max    
-     k_MA = 2.51    #                 # Activated macrophage decay rate
-     k_MR = 6       #                 # Resting macrophage decay rate 
+     m_A = quintela_parameters[0] #0.9      # 1/day           # Phagocytosis of the bacteria
+     MR_max = quintela_parameters[1] #5     # Macrophages resting max    
+     k_MA = quintela_parameters[2] #2.51    #                 # Activated macrophage decay rate
+     k_MR = quintela_parameters[3] #6       #                 # Resting macrophage decay rate 
      k_m = 1.414    #                 # Macrophage activation rate
 
      A = y[0]
